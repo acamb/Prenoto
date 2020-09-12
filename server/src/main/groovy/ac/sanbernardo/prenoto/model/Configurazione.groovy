@@ -1,6 +1,7 @@
 package ac.sanbernardo.prenoto.model
 
-import com.sun.istack.NotNull
+import javax.persistence.Version
+import javax.validation.constraints.NotNull
 
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
@@ -18,4 +19,25 @@ class Configurazione {
     @NotNull
     String valore
     boolean valido = true
+
+    @Override
+    public String toString() {
+        return "Configurazione{" +
+                "id=" + id +
+                ", chiave='" + chiave + '\'' +
+                ", valore='" + valore + '\'' +
+                ", valido=" + valido +
+                '}';
+    }
+
+    enum ConfigTokens {
+        POSTI_PER_ORA,
+        ORA_INIZIO,
+        ORA_FINE,
+        NUMERO_ORE_MAX,
+        TOKEN_FE,
+        ORE_VALIDITA_TOKEN
+    }
+
+
 }

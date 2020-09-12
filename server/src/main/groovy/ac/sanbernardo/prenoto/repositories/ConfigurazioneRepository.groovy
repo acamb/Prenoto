@@ -7,6 +7,6 @@ import io.micronaut.data.repository.CrudRepository
 @Repository
 interface ConfigurazioneRepository extends CrudRepository<Configurazione, Long> {
 
-    Configurazione findByChiave(String chiave);
+    Configurazione findByChiaveAndValidoTrue(String chiave);
 
 }

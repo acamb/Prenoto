@@ -11,6 +11,6 @@ import java.util.concurrent.locks.Lock
 @Repository
 interface PostoRiservatoRepository extends CrudRepository<PostoRiservato,Long>{
 
-        List<PostoRiservato> findByTipoIscrizioneAndActiveTrue(TipoIscrizione tipoIscrizione)
+        List<PostoRiservato> findByTipoIscrizioneAndValidoTrue(TipoIscrizione tipoIscrizione)
 
 }

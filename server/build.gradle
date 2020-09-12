@@ -31,15 +31,16 @@ dependencies {
     implementation("io.micronaut.sql:micronaut-hibernate-jpa")
     implementation("org.apache.logging.log4j:log4j-core:2.12.1")
     implementation("io.micronaut.data:micronaut-data-hibernate-jpa:1.1.3")
-    annotationProcessor("io.micronaut.data:micronaut-data-processor:1.1.3")
+    compileOnly("io.micronaut.data:micronaut-data-processor:1.1.3")
     runtimeOnly("org.apache.logging.log4j:log4j-api:2.12.1")
     runtimeOnly("org.apache.logging.log4j:log4j-slf4j-impl:2.12.1")
     runtimeOnly("com.h2database:h2")
     testImplementation(enforcedPlatform("io.micronaut:micronaut-bom:$micronautVersion"))
     testImplementation("io.micronaut:micronaut-inject-groovy")
-    testImplementation("org.junit.jupiter:junit-jupiter-api")
-    testImplementation("io.micronaut.test:micronaut-test-junit5")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine")
+    testImplementation("org.spockframework:spock-core") {
+        exclude group: "org.codehaus.groovy", module: "groovy-all"
+    }
+    testImplementation("io.micronaut.test:micronaut-test-spock")
 }
 
 test.classpath += configurations.developmentOnly
@@ -52,8 +53,8 @@ test {
 }
 
 java {
-    sourceCompatibility = JavaVersion.toVersion('11')
-    targetCompatibility = JavaVersion.toVersion('11')
+    sourceCompatibility = JavaVersion.toVersion('8')
+    targetCompatibility = JavaVersion.toVersion('8')
 }
 
 tasks.withType(GroovyCompile) {

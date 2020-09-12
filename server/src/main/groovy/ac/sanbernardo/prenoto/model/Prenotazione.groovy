@@ -5,6 +5,7 @@ import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
 import javax.persistence.Id
 import javax.persistence.ManyToOne
+import javax.persistence.Version
 
 @Entity
 class Prenotazione {
@@ -13,5 +14,15 @@ class Prenotazione {
     Long id
     @ManyToOne
     SlotPrenotazione slotPrenotazione
-    Long arciereId
+    Long userId
+
+
+    @Override
+    public String toString() {
+        return "Prenotazione{" +
+                "id=" + id +
+                ", slotPrenotazione=" + slotPrenotazione +
+                ", userId=" + userId +
+                '}';
+    }
 }

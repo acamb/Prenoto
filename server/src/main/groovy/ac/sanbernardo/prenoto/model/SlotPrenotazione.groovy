@@ -1,6 +1,8 @@
 package ac.sanbernardo.prenoto.model
 
-import com.sun.istack.NotNull
+import javax.persistence.Table
+import javax.persistence.Version
+import javax.validation.constraints.NotNull
 
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
@@ -8,11 +10,13 @@ import javax.persistence.GenerationType
 import javax.persistence.Id
 import javax.persistence.ManyToOne
 
-@Entity
+@Entity(name = "SLOT_PRENOTAZIONE")
 class SlotPrenotazione {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     Long id
+    @Version
+    int version
     @NotNull
     int giornoSettimana
     @NotNull
@@ -24,4 +28,19 @@ class SlotPrenotazione {
     boolean active = true
     @NotNull
     boolean initialized = false
+
+
+    @Override
+    public String toString() {
+        return "SlotPrenotazione{" +
+                "id=" + id +
+                ", version=" + version +
+                ", giornoSettimana=" + giornoSettimana +
+                ", ora=" + ora +
+                ", data=" + data +
+                ", postiRimanenti=" + postiRimanenti +
+                ", active=" + active +
+                ", initialized=" + initialized +
+                '}';
+    }
 }

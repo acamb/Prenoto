@@ -8,9 +8,14 @@ import io.micronaut.data.repository.CrudRepository
 @Repository
 interface SlotPrenotazioneRepository extends CrudRepository<SlotPrenotazione,Long>{
 
-    List<SlotPrenotazione> findByActiveTrue()
+    List<SlotPrenotazione> findByActiveTrueAndInitializedTrue()
 
-    @Query(value = "SELECT * FROM slot_prenotazione where id = :id FOR UPDATE",nativeQuery = true)
-    SlotPrenotazione getAndLock(Long id)
+    SlotPrenotazione findByGiornoSettimanaAndOra(int giornoSettimana, int ora)
+
+    @Query(value = "UPDATE SLOT_PRENOTAZIONE set active = 0 where active = 1",nativeQuery = true)
+    SlotPrenotazione chiudiSlotAttivi()
+
+    @Query(value = "UPDATE SLOT_PRENOTAZIONE set initialized = 1 where active = 1",nativeQuery = true)
+    SlotPrenotazione inizializzaSlotAttivi()
 
 }
