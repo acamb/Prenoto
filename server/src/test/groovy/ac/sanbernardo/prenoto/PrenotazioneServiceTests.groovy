@@ -129,9 +129,9 @@ class PrenotazioneServiceTests extends Specification {
         where:
         nPosti | nOre | totale
            3   |   2  |  6
-           3   |   1  |  3  // 6 + (6+3) = 15
-           12  |   2  | 24   // 15 + 6 + 3 + 24 = 48
-           2   |   4  |  8   //48 + 6 + 3 + 24 + 8 = 89
+           3   |   1  |  3
+           12  |   2  | 24
+           2   |   4  |  8
     }
 
     @Unroll

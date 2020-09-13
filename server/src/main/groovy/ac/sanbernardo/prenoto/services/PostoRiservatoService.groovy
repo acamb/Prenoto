@@ -24,8 +24,17 @@ class PostoRiservatoService {
         postoRiservatoRepository.findByTipoIscrizioneAndValidoTrue(tipo)
     }
     @Logged
-    void salvaPostoRiservato(PostoRiservato postoRiservato){
-        postoRiservatoRepository.save(postoRiservato)
+    List<PostoRiservato> salvaPostoRiservato(PostoRiservato postoRiservato){
+        if(postoRiservato.id){
+            PostoRiservato postoRiservatoDb = postoRiservatoRepository.findById(postoRiservato.id)
+            postoRiservatoDb.giorno = postoRiservato.giorno
+            postoRiservatoDb.ora = postoRiservato.ora
+            postoRiservatoDb.numeroOre = postoRiservato.numeroOre
+            postoRiservatoRepository.save(postoRiservatoDb)
+        }
+        else {
+            postoRiservatoRepository.save(postoRiservato)
+        }
     }
     @Logged
     void eliminaPostoRiservato(PostoRiservato postoRiservato){
