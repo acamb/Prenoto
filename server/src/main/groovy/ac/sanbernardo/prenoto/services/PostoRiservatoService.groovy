@@ -5,11 +5,13 @@ import ac.sanbernardo.prenoto.model.PostoRiservato
 import ac.sanbernardo.prenoto.model.TipoIscrizione
 import ac.sanbernardo.prenoto.repositories.PostoRiservatoRepository
 
+import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
 class PostoRiservatoService {
 
+    @Inject
     PostoRiservatoRepository postoRiservatoRepository
 
     /**

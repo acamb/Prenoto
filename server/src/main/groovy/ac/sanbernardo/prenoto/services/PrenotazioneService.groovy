@@ -1,6 +1,7 @@
 package ac.sanbernardo.prenoto.services
 
 import ac.sanbernardo.prenoto.aop.Logged
+import ac.sanbernardo.prenoto.exceptions.NumeroOreException
 import ac.sanbernardo.prenoto.exceptions.PostiEsauritiException
 import ac.sanbernardo.prenoto.model.Configurazione
 import ac.sanbernardo.prenoto.model.PostoRiservato
@@ -39,12 +40,13 @@ class PrenotazioneService {
      * @return La lista delle prenotazioni salvate o lancia un eccezione se almeno una prenotazione non e' possibile: in questo caso sono annullate tutte
      */
     @Logged
-    List<Prenotazione> prenota(User user, List<SlotPrenotazione> slots) throws PostiEsauritiException{
+    List<Prenotazione> prenota(User user, SlotPrenotazione slotPartenza,int ore) throws PostiEsauritiException, NumeroOreException{
         List<SlotPrenotazione> listaLock = []
         List<Prenotazione> prenotazioni = []
-        slots.each {
-            listaLock << slotPrenotazioneRepository.findByGiornoSettimanaAndOra(it.giornoSettimana,it.ora)
+        if(ore > 3){
+            throw new NumeroOreException();
         }
+        listaLock = getSlotsCollegati(slotPartenza,ore)
         if(listaLock.any{ it.postiRimanenti < 1 }){
             throw new PostiEsauritiException()
         }
@@ -83,12 +85,22 @@ class PrenotazioneService {
     @Logged
     void iscriviRiservati(TipoIscrizione tipoIscrizione){
         List<PostoRiservato> postiRiservati = postoRiservatoService.getPostiPerTipo(tipoIscrizione)
-        postiRiservati.each {
-            SlotPrenotazione slot = slotPrenotazioneRepository.getByGiornoOra(it.giorno,it.ora)
-            if(slot.postiRimanenti > 0 || tipoIscrizione == TipoIscrizione.UFFICIO){
-                iscrivi(slot,it.userId)
+        postiRiservati.each { posto ->
+            SlotPrenotazione slotPartenza = slotPrenotazioneRepository.findByGiornoSettimanaAndOra(posto.giorno,posto.ora)
+            getSlotsCollegati(slotPartenza,posto.numeroOre).each{ slot ->
+                if (slot.postiRimanenti > 0 || tipoIscrizione == TipoIscrizione.UFFICIO) {
+                    iscrivi(slot, posto.userId)
+                }
             }
         }
+    }
+
+    List<SlotPrenotazione> getSlotsCollegati(SlotPrenotazione slotPartenza,int numeroOre){
+        List<SlotPrenotazione> slots = []
+        (0..numeroOre-1).each { ora ->
+            slots << slotPrenotazioneRepository.findByGiornoSettimanaAndOra(slotPartenza.giornoSettimana, (slotPartenza.ora+ora))
+        }
+        slots
     }
 
     /**

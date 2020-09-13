@@ -85,7 +85,7 @@ class PrenotazioneServiceTests extends Specification {
             creaSettimana()
             (1..3).each {
                 prenotazioneService.prenota(creaUtente(it.toString()),
-                    [new SlotPrenotazione(ora: 10,giornoSettimana: 1)]
+                    new SlotPrenotazione(ora: 10,giornoSettimana: 1),1
                 )
             }
         then:
@@ -99,7 +99,7 @@ class PrenotazioneServiceTests extends Specification {
         creaSettimana()
         (1..4).each {
             prenotazioneService.prenota(creaUtente(it.toString()),
-                    [new SlotPrenotazione(ora: 10,giornoSettimana: 1)]
+                    new SlotPrenotazione(ora: 10,giornoSettimana: 1),1
             )
         }
         then:
@@ -109,10 +109,11 @@ class PrenotazioneServiceTests extends Specification {
     @Unroll
     void "iscrivi posti d'ufficio"(){
         when:
+            configurazioneRepository.deleteAll()
             initConfig()
             prenotazioneService.creaSlotNuovaSettimana()
             (1..nPosti).each{
-                User user = creaUtente(it)
+                User user = creaUtente(it.toString())
                 PostoRiservato r = postoRiservatoRepository.save(new PostoRiservato(
                         giorno: 1,
                         ora: 10,
@@ -124,18 +125,21 @@ class PrenotazioneServiceTests extends Specification {
             prenotazioneService.iscriviRiservati(TipoIscrizione.UFFICIO)
         then:
             prenotazioneRepository.count() == totale
+            prenotazioneRepository.deleteAll()
         where:
         nPosti | nOre | totale
            3   |   2  |  6
-           3   |   1  |  3
-           12  |   2  | 24
-           2   |   4  |  8
+           3   |   1  |  3  // 6 + (6+3) = 15
+           12  |   2  | 24   // 15 + 6 + 3 + 24 = 48
+           2   |   4  |  8   //48 + 6 + 3 + 24 + 8 = 89
     }
 
     @Unroll
     void "iscrivi posti preferenza"(){
         when:
+        configurazioneRepository.deleteAll()
         initConfig(3)
+        prenotazioneRepository.deleteAll()
         prenotazioneService.creaSlotNuovaSettimana()
         (1..nPostiRiservati).each{
             User user = creaUtente("U_${it}")
@@ -164,7 +168,7 @@ class PrenotazioneServiceTests extends Specification {
         where:
         nPostiRiservati | nOreRiservati | nPostiPreferenza | nOrePreferenza | totale
             3           |     1         |       4          |       1        |  3
-            1           |     2         |       3          |       1        |  4
+            1           |     2         |       3          |       1        |  4    //
             1           |     1         |       3          |       1        |  3
             1           |     3         |       3          |       2        |  7
     }
