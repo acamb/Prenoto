@@ -1,5 +1,6 @@
 package ac.sanbernardo.prenoto
 
+import ac.sanbernardo.prenoto.exceptions.MaxNumeroIscrizioniSuperateException
 import ac.sanbernardo.prenoto.exceptions.PostiEsauritiException
 import ac.sanbernardo.prenoto.model.Configurazione
 import ac.sanbernardo.prenoto.model.PostoRiservato
@@ -18,7 +19,7 @@ import spock.lang.Unroll
 
 import javax.inject.Inject
 
-@MicronautTest(application = Application.class,packages = "ac.sanbernardo.prenoto")
+@MicronautTest(application = Application.class,packages = "ac.sanbernardo.prenoto",rollback = true)
 class PrenotazioneServiceTests extends Specification {
 
     static final int POSTI_PER_ORA = 3
@@ -41,7 +42,8 @@ class PrenotazioneServiceTests extends Specification {
                 (Configurazione.ConfigTokens.POSTI_PER_ORA.name()) : postiPerOre,
                 (Configurazione.ConfigTokens.ORA_INIZIO.name()) : ORA_INIZIO,
                 (Configurazione.ConfigTokens.ORA_FINE.name()) : ORA_FINE,
-                (Configurazione.ConfigTokens.NUMERO_ORE_MAX.name()): 3
+                (Configurazione.ConfigTokens.NUMERO_ORE_MAX.name()): 3,
+                (Configurazione.ConfigTokens.MAX_PRENOTAZIONI_UTENTE_SETTIMANA.name()) : 3
         ]
         configs.each { key,value ->
             configurazioneRepository.save(new Configurazione(chiave: key,valore: value))
@@ -66,7 +68,7 @@ class PrenotazioneServiceTests extends Specification {
         when:
             initConfig()
         then:
-            configurazioneRepository.count() == 4
+            configurazioneRepository.count() == 5
     }
 
     @Unroll
@@ -126,6 +128,7 @@ class PrenotazioneServiceTests extends Specification {
         then:
             prenotazioneRepository.count() == totale
             prenotazioneRepository.deleteAll()
+            postoRiservatoRepository.deleteAll()
         where:
         nPosti | nOre | totale
            3   |   2  |  6
@@ -140,6 +143,7 @@ class PrenotazioneServiceTests extends Specification {
         configurazioneRepository.deleteAll()
         initConfig(3)
         prenotazioneRepository.deleteAll()
+        postoRiservatoRepository.deleteAll()
         prenotazioneService.creaSlotNuovaSettimana()
         (1..nPostiRiservati).each{
             User user = creaUtente("U_${it}")
@@ -165,12 +169,28 @@ class PrenotazioneServiceTests extends Specification {
         prenotazioneService.iscriviRiservati(TipoIscrizione.PREFERENZA)
         then:
         prenotazioneRepository.count() == totale
+
         where:
         nPostiRiservati | nOreRiservati | nPostiPreferenza | nOrePreferenza | totale
             3           |     1         |       4          |       1        |  3
             1           |     2         |       3          |       1        |  4    //
             1           |     1         |       3          |       1        |  3
             1           |     3         |       3          |       2        |  7
+    }
+
+    @Unroll
+    void "prenotazione con numero massimo settimanale superato"(){
+        given:
+            initConfig(3)
+            prenotazioneService.creaSlotNuovaSettimana()
+            User user = creaUtente("U")
+            prenotazioneService.prenota(user,new SlotPrenotazione(giornoSettimana: 1,ora: 10),1)
+            prenotazioneService.prenota(user,new SlotPrenotazione(giornoSettimana: 2,ora: 10),1)
+            prenotazioneService.prenota(user,new SlotPrenotazione(giornoSettimana: 3,ora: 10),1)
+        when:
+            prenotazioneService.prenota(user,new SlotPrenotazione(giornoSettimana: 4,ora: 10),1)
+        then:
+            thrown(MaxNumeroIscrizioniSuperateException.class)
     }
 
 

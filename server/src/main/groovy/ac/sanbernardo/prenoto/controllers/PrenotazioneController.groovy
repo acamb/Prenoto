@@ -2,6 +2,7 @@ package ac.sanbernardo.prenoto.controllers
 
 import ac.sanbernardo.prenoto.aop.Logged
 import ac.sanbernardo.prenoto.controllers.payloads.IscriviRequestBody
+import ac.sanbernardo.prenoto.exceptions.MaxNumeroIscrizioniSuperateException
 import ac.sanbernardo.prenoto.exceptions.NumeroOreException
 import ac.sanbernardo.prenoto.exceptions.PostiEsauritiException
 import ac.sanbernardo.prenoto.model.Prenotazione
@@ -53,6 +54,10 @@ class PrenotazioneController {
         catch(PostiEsauritiException ex){
             result = false
             message = "PRENOTAZIONE_KO_POSTO"
+        }
+        catch(MaxNumeroIscrizioniSuperateException ex){
+            result = false
+            message = "PRENOTAZIONE_KO_NUM_PRENOTAZIONI"
         }
 
         return [

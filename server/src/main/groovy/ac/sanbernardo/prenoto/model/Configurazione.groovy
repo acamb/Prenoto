@@ -36,7 +36,8 @@ class Configurazione {
         ORA_FINE,
         NUMERO_ORE_MAX,
         TOKEN_FE,
-        ORE_VALIDITA_TOKEN
+        ORE_VALIDITA_TOKEN,
+        MAX_PRENOTAZIONI_UTENTE_SETTIMANA
     }
 
 

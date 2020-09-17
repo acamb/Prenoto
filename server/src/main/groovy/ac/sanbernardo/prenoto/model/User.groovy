@@ -31,6 +31,8 @@ class User implements UppercaseTrait {
     String password
     boolean active = true
     boolean cambioPassword = true
+    @NotNull
+    String username
 
     @PrePersist
     void prePersist(){

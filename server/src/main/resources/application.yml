@@ -1,6 +1,14 @@
 micronaut:
   application:
     name: prenoto
+  security:
+    authentication: bearer
+    token:
+      jwt:
+        signatures:
+          secret:
+            generator:
+              secret: changeMechangeMechangeMechangeMechangeMechangeMe
 datasources:
   default:
     url: jdbc:h2:mem:devDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
@@ -8,3 +16,4 @@ datasources:
     username: sa
     password: ''
 jpa.default.properties.hibernate.hbm2ddl.auto: update
+

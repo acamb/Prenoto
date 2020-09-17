@@ -1,6 +1,7 @@
 package ac.sanbernardo.prenoto.services
 
 import ac.sanbernardo.prenoto.aop.Logged
+import ac.sanbernardo.prenoto.exceptions.MaxNumeroIscrizioniSuperateException
 import ac.sanbernardo.prenoto.exceptions.NumeroOreException
 import ac.sanbernardo.prenoto.exceptions.PostiEsauritiException
 import ac.sanbernardo.prenoto.model.Configurazione
@@ -18,6 +19,7 @@ import org.slf4j.LoggerFactory
 
 import javax.inject.Inject
 import javax.inject.Singleton
+import javax.persistence.NoResultException
 import javax.transaction.Transactional
 
 @Singleton
@@ -40,7 +42,7 @@ class PrenotazioneService {
      * @return La lista delle prenotazioni salvate o lancia un eccezione se almeno una prenotazione non e' possibile: in questo caso sono annullate tutte
      */
     @Logged
-    List<Prenotazione> prenota(User user, SlotPrenotazione slotPartenza,int ore) throws PostiEsauritiException, NumeroOreException{
+    List<Prenotazione> prenota(User user, SlotPrenotazione slotPartenza,int ore) throws PostiEsauritiException, NumeroOreException,MaxNumeroIscrizioniSuperateException{
         List<SlotPrenotazione> listaLock = []
         List<Prenotazione> prenotazioni = []
         if(ore > 3){
@@ -51,7 +53,12 @@ class PrenotazioneService {
             throw new PostiEsauritiException()
         }
         listaLock.each { SlotPrenotazione slot ->
-            prenotazioni << iscrivi(slot,user.id)
+            if(verificaIscrivibilita(slot,TipoIscrizione.UTENTE,user.id)) {
+                prenotazioni << iscrivi(slot, user.id)
+            }
+            else{
+                throw new MaxNumeroIscrizioniSuperateException()
+            }
         }
         prenotazioni
     }
@@ -88,7 +95,7 @@ class PrenotazioneService {
         postiRiservati.each { posto ->
             SlotPrenotazione slotPartenza = slotPrenotazioneRepository.findByGiornoSettimanaAndOra(posto.giorno,posto.ora)
             getSlotsCollegati(slotPartenza,posto.numeroOre).each{ slot ->
-                if (slot.postiRimanenti > 0 || tipoIscrizione == TipoIscrizione.UFFICIO) {
+                if (verificaIscrivibilita(slot,tipoIscrizione,posto.userId)) {
                     iscrivi(slot, posto.userId)
                 }
             }
@@ -153,8 +160,13 @@ class PrenotazioneService {
      * @return La lista di prenotazioni attive per l'utente
      */
     @Logged
-    List<Prenotazione> getPrenotazioniPerArciere(User user){
-        prenotazioneRepository.prenotazioniAttive(user.id)
+    List<Prenotazione> getPrenotazioniPerArciere(Long userId){
+        try {
+            prenotazioneRepository.prenotazioniAttive(userId)
+        }
+        catch(NoResultException ex){
+            return []
+        }
     }
 
     /**
@@ -176,4 +188,16 @@ class PrenotazioneService {
     }
 
 
+    boolean verificaIscrivibilita(SlotPrenotazione slotPrenotazione, TipoIscrizione tipoIscrizione,Long userId) {
+        if(tipoIscrizione == TipoIscrizione.UFFICIO){
+            return true
+        }
+        if(slotPrenotazione.postiRimanenti < 1){
+            return false
+        }
+        if(getPrenotazioniPerArciere(userId).size() >= configurazioneRepository.findByChiaveAndValidoTrue(Configurazione.ConfigTokens.MAX_PRENOTAZIONI_UTENTE_SETTIMANA.name()).valore.toInteger()){
+            return false
+        }
+        return true
+    }
 }

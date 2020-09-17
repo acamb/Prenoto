@@ -6,16 +6,18 @@ import io.micronaut.data.annotation.Query
 import io.micronaut.data.annotation.Repository
 import io.micronaut.data.repository.CrudRepository
 
+import javax.annotation.Nullable
+
 @Repository
 interface PrenotazioneRepository extends CrudRepository<Prenotazione,Long>{
 
     @Query(value = """SELECT *
               FROM Prenotazione p
-              INNER JOIN SlotPrenotazione s
+              INNER JOIN Slot_Prenotazione s
               WHERE p.slot_prenotazione_id = s.id
-              AND s.user_id = :userId
+              AND p.user_id = :userId
               AND s.active = 1
             """,nativeQuery = true)
-    List<Prenotazione> prenotazioniAttive(Long userId)
+    @Nullable List<Prenotazione> prenotazioniAttive(Long userId)
 
 }
