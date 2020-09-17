@@ -2,6 +2,7 @@ package ac.sanbernardo.prenoto.auth
 
 import ac.sanbernardo.prenoto.model.User
 import ac.sanbernardo.prenoto.repositories.UserRepository
+import ac.sanbernardo.prenoto.services.UserService
 import io.micronaut.context.env.Environment
 import io.micronaut.http.HttpRequest
 import io.micronaut.security.authentication.AuthenticationException
@@ -22,7 +23,7 @@ import javax.inject.Singleton
 class UserAuthenticationProvider implements  AuthenticationProvider{
 
     @Inject
-    UserRepository userRepository
+    UserService userService
     @Inject
     BcryptPasswordEncoderService passwordEncoderService
     @Inject
@@ -31,23 +32,16 @@ class UserAuthenticationProvider implements  AuthenticationProvider{
     @Override
     public Publisher<AuthenticationResponse> authenticate(@Nullable HttpRequest<?> httpRequest, AuthenticationRequest<?, ?> authenticationRequest) {
         return Flowable.create(emitter -> {
-            if(environment.getActiveNames().contains("dev")){
-                if(authenticationRequest.identity.equals("test")){
-                    emitter.onNext(new UserDetails("test", new ArrayList<>()));
-                    emitter.onComplete();
-                }
+
+            try {
+                User user = userService.login(authenticationRequest.getIdentity(), passwordEncoderService.encode(authenticationRequest.getSecret()))
+                emitter.onNext(new UserDetails(user.username, user.role ? [user.role] : []));
+                emitter.onComplete();
             }
-            else {
-                try {
-                    User user = userRepository.findByUsernameAndPassword(authenticationRequest.getIdentity(), passwordEncoderService.encode(authenticationRequest.getSecret()))
-                    //TODO[AC] roles
-                    emitter.onNext(new UserDetails(user.username, new ArrayList<>()));
-                    emitter.onComplete();
-                }
-                catch (all) {
-                    emitter.onError(new AuthenticationException(new AuthenticationFailed()));
-                }
+            catch (all) {
+                emitter.onError(new AuthenticationException(new AuthenticationFailed()));
             }
+
         }, BackpressureStrategy.ERROR);
     }
 }

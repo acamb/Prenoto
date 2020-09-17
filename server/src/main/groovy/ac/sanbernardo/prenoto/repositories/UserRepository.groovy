@@ -8,4 +8,6 @@ import io.micronaut.data.repository.CrudRepository
 interface UserRepository extends CrudRepository<User,Long>{
 
     User findByUsernameAndPassword(String username,String password)
+
+    User findByUsername(String username)
 }

@@ -33,6 +33,7 @@ class User implements UppercaseTrait {
     boolean cambioPassword = true
     @NotNull
     String username
+    String role
 
     @PrePersist
     void prePersist(){
@@ -55,5 +56,11 @@ class User implements UppercaseTrait {
                 ", active=" + active +
                 ", cambioPassword=" + cambioPassword +
                 '}';
+    }
+
+    enum Roles {
+        USER,
+        ADMIN,
+        OPERATOR
     }
 }
