@@ -48,7 +48,8 @@ class PrenotazioneService {
         if(ore > 3){
             throw new NumeroOreException();
         }
-        listaLock = getSlotsCollegati(slotPartenza,ore)
+        SlotPrenotazione slotDb = slotPrenotazioneRepository.findById(slotPartenza.id)
+        listaLock = getSlotsCollegati(slotDb,ore)
         if(listaLock.any{ it.postiRimanenti < 1 }){
             throw new PostiEsauritiException()
         }
@@ -68,9 +69,9 @@ class PrenotazioneService {
      * @param prenotazione
      */
     @Logged
-    void cancellaPrenotazione(Prenotazione prenotazione){
-        Prenotazione prenotazioneDb = prenotazioneRepository.findById(prenotazione.id)
-        if(!prenotazioneDb || prenotazioneDb.userId != prenotazione.userId){
+    void cancellaPrenotazione(User user,Long id){
+        Prenotazione prenotazioneDb = prenotazioneRepository.findById(id)
+        if(!prenotazioneDb || prenotazioneDb.userId != user.id){
             throw new RuntimeException("La prenotazione non esiste")
         }
         prenotazioneRepository.delete(prenotazioneDb)
@@ -195,6 +196,8 @@ class PrenotazioneService {
         if(slotPrenotazione.postiRimanenti < 1){
             return false
         }
+        //TODO[AC] modificare per controllare che non ce ne sia gia' una lo stesso giorno e che non ci siano N iscrizioni in GIORNI diversi
+        //TODO[AC] se c'e' gia' un'iscrizione puo' andare bene a patto che il totale delle ore sia <= 3 e siano su ore contigue
         if(getPrenotazioniPerArciere(userId).size() >= configurazioneRepository.findByChiaveAndValidoTrue(Configurazione.ConfigTokens.MAX_PRENOTAZIONI_UTENTE_SETTIMANA.name()).valore.toInteger()){
             return false
         }

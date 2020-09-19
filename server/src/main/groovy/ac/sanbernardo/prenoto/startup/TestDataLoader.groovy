@@ -1,5 +1,8 @@
 package ac.sanbernardo.prenoto.startup
 
+import ac.sanbernardo.prenoto.aop.Logged
+import ac.sanbernardo.prenoto.auth.BcryptPasswordEncoderService
+import ac.sanbernardo.prenoto.auth.PasswordEncoder
 import ac.sanbernardo.prenoto.model.Configurazione
 import ac.sanbernardo.prenoto.model.User
 import ac.sanbernardo.prenoto.repositories.ConfigurazioneRepository
@@ -9,6 +12,7 @@ import io.micronaut.context.annotation.Requires
 import io.micronaut.context.env.Environment
 import io.micronaut.runtime.event.annotation.EventListener
 import io.micronaut.discovery.event.ServiceReadyEvent
+import jdk.nashorn.internal.runtime.logging.Loggable
 
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -23,12 +27,15 @@ class TestDataLoader {
     ConfigurazioneRepository configurazioneRepository
     @Inject
     PrenotazioneService prenotazioneService
+    @Inject
+    BcryptPasswordEncoderService encoder
 
     @EventListener
+    @Logged
     void loadData(final ServiceReadyEvent event){
         userRepository.save(new User(
                 username: "test",
-                password: "aaa",
+                password: encoder.encode("aaa"),
                 nome: "test",
                 cognome: "test",
                 active: true,
@@ -36,7 +43,7 @@ class TestDataLoader {
         ))
         userRepository.save(new User(
                 username: "test1",
-                password: "aaa",
+                password: encoder.encode("aaa"),
                 nome: "test1",
                 cognome: "test1",
                 active: true,
@@ -44,7 +51,7 @@ class TestDataLoader {
         ))
         userRepository.save(new User(
                 username: "test2",
-                password: "aaa",
+                password: encoder.encode("aaa"),
                 nome: "test2",
                 cognome: "test2",
                 active: true,
@@ -53,7 +60,7 @@ class TestDataLoader {
         ))
         userRepository.save(new User(
                 username: "test3",
-                password: "aaa",
+                password: encoder.encode("aaa"),
                 nome: "test3",
                 cognome: "test3",
                 active: true,
@@ -62,7 +69,7 @@ class TestDataLoader {
         ))
         userRepository.save(new User(
                 username: "test4",
-                password: "aaa",
+                password: encoder.encode("aaa"),
                 nome: "test4",
                 cognome: "test4",
                 active: true,

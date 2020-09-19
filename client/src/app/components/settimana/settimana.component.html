@@ -1,0 +1,20 @@
+<div class="card" *ngIf="settimana">
+  <div class="card-header">
+    Slot iscrizioni
+  </div>
+  <div class="card-body">
+    <div *ngFor="let giorno of giorni">
+      <div class="card ">
+      <div class="card-header>"><h3>{{ getGiornoFromNumero(giorno)}}<button class="btn btn-primary btn-lg float-right" (click)="iscrivi(giorno)">Iscrivi</button></h3> </div>
+      <div class="card-body">
+      <ul>
+        <li *ngFor="let slot of getSlots(giorno)">
+          Ore {{slot.ora}}, posti disponibili: {{slot.posti}}
+        </li>
+      </ul>
+      </div>
+    </div>
+      <br/>
+    </div>
+  </div>
+</div>

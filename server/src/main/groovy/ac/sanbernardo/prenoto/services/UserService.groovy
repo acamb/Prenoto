@@ -22,7 +22,13 @@ class UserService {
 
     User login(String username,String password){
         //TODO[AC] roles
-        return userRepository.findByUsernameAndPassword(username,password)
+        User user =  userRepository.findByUsername(username)
+        if(encoder.matches(password,user.password)){
+            return user
+        }
+        else{
+            throw new RuntimeException("bad credentials")
+        }
     }
 
     void aggiornaPassword(User user, String oldPassword, String newPassword){
@@ -31,6 +37,7 @@ class UserService {
             throw new RuntimeException("wrong password")
         }
         userDb.password = encoder.encode(newPassword)
+        userDb.cambioPassword = false
         userRepository.save(userDb)
     }
 }

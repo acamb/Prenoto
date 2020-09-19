@@ -34,7 +34,7 @@ class UserAuthenticationProvider implements  AuthenticationProvider{
         return Flowable.create(emitter -> {
 
             try {
-                User user = userService.login(authenticationRequest.getIdentity(), passwordEncoderService.encode(authenticationRequest.getSecret()))
+                User user = userService.login(authenticationRequest.getIdentity(),authenticationRequest.getSecret())
                 emitter.onNext(new UserDetails(user.username, user.role ? [user.role] : []));
                 emitter.onComplete();
             }
