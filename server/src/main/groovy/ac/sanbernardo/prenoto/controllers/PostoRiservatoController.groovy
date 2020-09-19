@@ -31,7 +31,7 @@ class PostoRiservatoController {
     def getPostiRiservati(TipoIscrizione tipo){
         postoRiservatoService.getPostiPerTipo(tipo).collect{
 
-            User user = userRepository.findById(it.userId)
+            User user = userRepository.findById(it.userId).get()
             [
                     giorno:    it.giorno,
                     ora:       it.ora,

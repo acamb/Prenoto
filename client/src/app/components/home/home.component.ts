@@ -27,7 +27,8 @@ export class HomeComponent implements OnInit {
 
   async eliminaIscrizione(id){
     await this.prenotazioniService.cancella(id).toPromise();
-    await this.appState.loadIscrizioni();
+    this.appState.loadIscrizioni();
+    return this.appState.loadSettimana();
   }
 
 }

@@ -9,7 +9,7 @@
         <li *ngFor="let iscrizione of getOre(giorno)">
           Ore {{iscrizione.ora}} <button class="btn btn-danger btn-sm" (click)="elimina(iscrizione.id)">Elimina</button>
         </li>
-        <button class="btn btn-danger" (click)="eliminaGiorno(giorno)" ]>Elimina tutte per questo giorno</button>
+        <button class="btn btn-danger" (click)="eliminaGiorno(giorno)">Elimina tutte per questo giorno</button>
       </ul>
     </div>
   </div>

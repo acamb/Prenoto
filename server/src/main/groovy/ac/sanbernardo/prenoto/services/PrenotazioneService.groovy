@@ -48,7 +48,7 @@ class PrenotazioneService {
         if(ore > 3){
             throw new NumeroOreException();
         }
-        SlotPrenotazione slotDb = slotPrenotazioneRepository.findById(slotPartenza.id)
+        SlotPrenotazione slotDb = slotPrenotazioneRepository.findById(slotPartenza.id).get()
         listaLock = getSlotsCollegati(slotDb,ore)
         if(listaLock.any{ it.postiRimanenti < 1 }){
             throw new PostiEsauritiException()
@@ -70,11 +70,14 @@ class PrenotazioneService {
      */
     @Logged
     void cancellaPrenotazione(User user,Long id){
-        Prenotazione prenotazioneDb = prenotazioneRepository.findById(id)
+        Prenotazione prenotazioneDb = prenotazioneRepository.findById(id).get()
+        SlotPrenotazione slot = prenotazioneDb.slotPrenotazione
         if(!prenotazioneDb || prenotazioneDb.userId != user.id){
             throw new RuntimeException("La prenotazione non esiste")
         }
+        slot.postiRimanenti++
         prenotazioneRepository.delete(prenotazioneDb)
+        slotPrenotazioneRepository.save(slot)
     }
 
     /**

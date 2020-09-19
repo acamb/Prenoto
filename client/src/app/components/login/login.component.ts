@@ -18,7 +18,6 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     if(this.authService.authenticated){
-      //TODO[AC]
       this.router.navigateByUrl("/")
     }
   }
@@ -26,7 +25,6 @@ export class LoginComponent implements OnInit {
   onSubmit(){
     this.authService.authenticate(this.username,this.password).pipe(map(result => {
       if(result){
-        //TODO[AC]
         this.router.navigateByUrl("/")
       }
       else{

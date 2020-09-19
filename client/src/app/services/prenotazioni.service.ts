@@ -36,6 +36,6 @@ export class PrenotazioniService {
   }
 
   cancella(id: number) : Observable<ApiResult> {
-    return this.http.delete<ApiResult>(getServer() + `api/prenotazione/${id}`)
+    return this.http.delete<ApiResult>(getServer() + `api/prenotazione?id=${id}`)
   }
 }

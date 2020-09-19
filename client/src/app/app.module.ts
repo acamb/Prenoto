@@ -16,6 +16,9 @@ import {NgbModule} from "@ng-bootstrap/ng-bootstrap";
 import {RestrictedRoleDirective} from "./directives/restricted-role.directive";
 import { IscrizioniComponent } from './components/iscrizioni/iscrizioni.component';
 import { SettimanaComponent } from './components/settimana/settimana.component';
+import { IscrizioneComponent } from './components/iscrizione/iscrizione.component';
+import {BackButtonComponent} from "./components/back-button/back-button.component";
+import { ErrorComponent } from './components/error/error.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +27,10 @@ import { SettimanaComponent } from './components/settimana/settimana.component';
     HomeComponent,
     RestrictedRoleDirective,
     IscrizioniComponent,
-    SettimanaComponent
+    SettimanaComponent,
+    IscrizioneComponent,
+    BackButtonComponent,
+    ErrorComponent
   ],
   imports: [
     BrowserModule,

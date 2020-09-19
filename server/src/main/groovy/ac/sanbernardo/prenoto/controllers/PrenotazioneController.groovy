@@ -17,10 +17,12 @@ import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Delete
 import io.micronaut.http.annotation.Get
 import io.micronaut.http.annotation.Post
+import io.micronaut.http.annotation.QueryValue
 import io.micronaut.security.annotation.Secured
 import io.micronaut.security.rules.SecurityRule
 
 import javax.inject.Inject
+import javax.persistence.OptimisticLockException
 import java.security.Principal
 
 @Controller("/api/prenotazione")
@@ -55,12 +57,11 @@ class PrenotazioneController {
     @Post("/")
     @Logged
     def iscrivi(@Body IscriviRequestBody body){
-        Prenotazione p
-        String result = true
+        boolean result = true
         String message = "PRENOTAZIONE_OK"
 
         try {
-            p = prenotazioneService.prenota(body.user,
+            prenotazioneService.prenota(body.user,
                     body.slot,
                     body.ore)
         }
@@ -76,17 +77,24 @@ class PrenotazioneController {
             result = false
             message = "PRENOTAZIONE_KO_NUM_PRENOTAZIONI"
         }
+        catch(OptimisticLockException e){
+            result = false
+            message = "PRENOTAZIONE_KO_CONCURRENT"
+        }
+        catch(all){
+            result = false
+            message = "E_GENERICO"
+        }
 
         return [
-                result: result,
-                message: message,
-                prenotazioneId: p?.id
+                success: result,
+                message: message
         ]
     }
 
     @Delete("/")
     @Logged
-    def cancellaPrenotazione(@Parameter Long id, Principal principal){
+    def cancellaPrenotazione(@QueryValue Long id, Principal principal){
         try {
             prenotazioneService.cancellaPrenotazione(userService.getUser(principal.name), id)
             [

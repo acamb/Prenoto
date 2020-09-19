@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {Settimana} from "../../model/Settimana";
 import {Slot} from "../../model/Slot";
 import {getGiornoFromNumero} from "../../services/Utils";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-settimana',
@@ -15,6 +16,9 @@ export class SettimanaComponent implements OnInit {
 
   getGiornoFromNumero = getGiornoFromNumero;
 
+  constructor(private router: Router) {
+  }
+
   get giorni() : Array<number> {
     return this.settimana.giorni.filter(
           g => g.slots.filter(s => s.visibile).length > 0) //solo quelli con slot ancora liberi
@@ -26,13 +30,11 @@ export class SettimanaComponent implements OnInit {
   }
 
 
-  constructor() { }
-
   ngOnInit(): void {
   }
 
   iscrivi(giorno: number){
-
+    this.router.navigateByUrl(`/iscrivi/${giorno}`);
   }
 
 }

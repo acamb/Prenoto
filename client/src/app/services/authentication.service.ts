@@ -7,6 +7,7 @@ import {BehaviorSubject, Observable} from "rxjs";
 import {User} from "../model/User";
 import {map} from "rxjs/operators";
 import {UserService} from "./user.service";
+import {AppStateService} from "./app-state.service";
 
 
 @Injectable()
@@ -53,7 +54,7 @@ export class AuthenticationService {
 
 
 
-  constructor(private httpClient: HttpClient, private router: Router,private userService: UserService) {
+  constructor(private httpClient: HttpClient, private router: Router,private userService: UserService,private appState: AppStateService) {
     this.subject.next(JSON.parse( sessionStorage.getItem('user')));
    }
 

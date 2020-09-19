@@ -1,0 +1,31 @@
+<h2>{{getGiornoFromNumero(giorno)}}</h2>
+<form #loginForm="ngForm" (ngSubmit)="onSubmit()">
+  <div class="form-group row">
+    <div class="col-md-3"><label>Ora di partenza</label>
+    </div>
+    <div class="col-md-3">
+      <select class="form-control" required [(ngModel)]="slotScelto"
+             name="slot">
+        <option *ngFor="let slot of slotDisponibili" [ngValue]="slot">{{slot.ora}}</option>
+      </select>
+    </div>
+  </div>
+  <div class="form-group row">
+    <div class="col-md-3"><label>Numero ore</label>
+    </div>
+    <div class="col-md-3">
+      <select class="form-control" required [(ngModel)]="ore"
+              name="slot">
+        <option *ngFor="let ora of oreList" [ngValue]="ora">{{ora}}</option>
+      </select>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-4">
+      <button type="submit" [disabled]="!loginForm.form.valid" class="btn btn-success">Iscrivi</button>
+      <button type="reset" class="btn btn-default">Reset</button>
+      <app-back-button></app-back-button>
+    </div>
+  </div>
+</form>

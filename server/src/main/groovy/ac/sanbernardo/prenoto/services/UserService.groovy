@@ -32,7 +32,7 @@ class UserService {
     }
 
     void aggiornaPassword(User user, String oldPassword, String newPassword){
-        User userDb = userRepository.findById(user.id)
+        User userDb = userRepository.findById(user.id).get()
         if(userDb.password != oldPassword){
             throw new RuntimeException("wrong password")
         }

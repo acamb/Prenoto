@@ -5,6 +5,8 @@ import {AuthGuard} from "./guards/AuthGuard";
 import {HomeComponent} from "./components/home/home.component";
 import {IscrizioniUtenteResolver} from "./resolvers/IscrizioniUtenteResolver";
 import {SettimanaResolver} from "./resolvers/SettimanaResolver";
+import {IscrizioneUtente} from "./model/IscrizioneUtente";
+import {IscrizioneComponent} from "./components/iscrizione/iscrizione.component";
 
 
 const routes: Routes = [
@@ -24,6 +26,10 @@ const routes: Routes = [
           iscrizioni: IscrizioniUtenteResolver,
           settimana: SettimanaResolver
         }
+      },
+      {
+        path: 'iscrivi/:giorno',
+        component: IscrizioneComponent
       },
       {
         path: '',

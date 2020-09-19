@@ -25,6 +25,7 @@ class UserController {
     def getUser(@Nullable Principal principal){
         User user = userService.getUser(principal.getName())
         [
+                id: user.id,
                 username: user.username,
                 nome: user.nome,
                 cognome: user.cognome,
