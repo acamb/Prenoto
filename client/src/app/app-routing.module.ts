@@ -7,6 +7,9 @@ import {IscrizioniUtenteResolver} from "./resolvers/IscrizioniUtenteResolver";
 import {SettimanaResolver} from "./resolvers/SettimanaResolver";
 import {IscrizioneUtente} from "./model/IscrizioneUtente";
 import {IscrizioneComponent} from "./components/iscrizione/iscrizione.component";
+import {ErrorComponent} from "./components/error/error.component";
+import {PostiRiservatiComponent} from "./components/posti-riservati/posti-riservati.component";
+import {AdminComponent} from "./components/admin/admin.component";
 
 
 const routes: Routes = [
@@ -30,6 +33,18 @@ const routes: Routes = [
       {
         path: 'iscrivi/:giorno',
         component: IscrizioneComponent
+      },
+      {
+        path: 'error/:code',
+        component: ErrorComponent
+      },
+      {
+        path: 'postiRiservati',
+        component: PostiRiservatiComponent
+      },
+      {
+        path: 'admin',
+        component: AdminComponent
       },
       {
         path: '',

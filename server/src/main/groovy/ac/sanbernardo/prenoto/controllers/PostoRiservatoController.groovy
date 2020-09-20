@@ -12,9 +12,11 @@ import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Delete
 import io.micronaut.http.annotation.Get
 import io.micronaut.http.annotation.Post
+import io.micronaut.http.annotation.RequestAttribute
 import io.micronaut.security.annotation.Secured
 import io.micronaut.security.rules.SecurityRule
 
+import javax.annotation.security.RolesAllowed
 import javax.inject.Inject
 
 @Controller("/api/postoRiservato")
@@ -28,6 +30,7 @@ class PostoRiservatoController {
 
     @Get("/{tipo}")
     @Logged
+    @RolesAllowed(["OPERATOR","ADMIN"])
     def getPostiRiservati(TipoIscrizione tipo){
         postoRiservatoService.getPostiPerTipo(tipo).collect{
 
@@ -47,14 +50,16 @@ class PostoRiservatoController {
     }
 
     @Post("/")
+    @RolesAllowed(["OPERATOR","ADMIN"])
     def save(@Body PostoRiservato postoRiservato){
         postoRiservatoService.salvaPostoRiservato(postoRiservato)
         HttpResponse.ok()
     }
 
     @Delete("/")
-    def delete(@Body PostoRiservato postoRiservato){
-        postoRiservatoService.eliminaPostoRiservato(postoRiservato)
+    @RolesAllowed(["OPERATOR","ADMIN"])
+    def delete(@RequestAttribute Long id){
+        postoRiservatoService.eliminaPostoRiservato(id)
         HttpResponse.ok()
     }
 }

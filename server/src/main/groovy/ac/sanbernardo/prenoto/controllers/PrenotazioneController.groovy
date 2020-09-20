@@ -21,6 +21,7 @@ import io.micronaut.http.annotation.QueryValue
 import io.micronaut.security.annotation.Secured
 import io.micronaut.security.rules.SecurityRule
 
+import javax.annotation.security.RolesAllowed
 import javax.inject.Inject
 import javax.persistence.OptimisticLockException
 import java.security.Principal
@@ -35,6 +36,7 @@ class PrenotazioneController {
 
     @Get("/slotAttivi")
     @Logged
+    @RolesAllowed(["USER","OPERATOR","ADMIN"])
     def getSlotsAttivi(){
         [ giorni:
             prenotazioneService.getSlotsAttuali().groupBy {it.giornoSettimana}.collect { giorno ->
@@ -56,6 +58,7 @@ class PrenotazioneController {
 
     @Post("/")
     @Logged
+    @RolesAllowed(["USER","OPERATOR","ADMIN"])
     def iscrivi(@Body IscriviRequestBody body){
         boolean result = true
         String message = "PRENOTAZIONE_OK"
@@ -94,6 +97,7 @@ class PrenotazioneController {
 
     @Delete("/")
     @Logged
+    @RolesAllowed(["USER","OPERATOR","ADMIN"])
     def cancellaPrenotazione(@QueryValue Long id, Principal principal){
         try {
             prenotazioneService.cancellaPrenotazione(userService.getUser(principal.name), id)
@@ -111,6 +115,7 @@ class PrenotazioneController {
 
     @Get("/")
     @Logged
+    @RolesAllowed(["USER","OPERATOR","ADMIN"])
     def prenotazioniUtente(Principal principal){
 
 

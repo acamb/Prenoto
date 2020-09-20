@@ -51,7 +51,7 @@ export class IscrizioneComponent implements OnInit {
           this.onSubmit();
         }
         else {
-          return this.router.navigateByUrl(`/error?code=${result.message}`);
+          return this.router.navigateByUrl(`/error/${result.message}`);
         }
       }
     }

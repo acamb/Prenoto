@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
+import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from "@angular/common/http";
 import {JwtInterceptorService} from "./services/jwt-interceptor.service";
 import {AuthenticationService} from "./services/authentication.service";
 import {AuthGuard} from "./guards/AuthGuard";
@@ -19,6 +19,17 @@ import { SettimanaComponent } from './components/settimana/settimana.component';
 import { IscrizioneComponent } from './components/iscrizione/iscrizione.component';
 import {BackButtonComponent} from "./components/back-button/back-button.component";
 import { ErrorComponent } from './components/error/error.component';
+import {TranslateLoader, TranslateModule} from "@ngx-translate/core";
+import {TranslateHttpLoader} from "@ngx-translate/http-loader";
+import { PostiRiservatiComponent } from './components/posti-riservati/posti-riservati.component';
+import { AdminComponent } from './components/admin/admin.component';
+import { PostoRiservatoTableComponent } from './components/posto-riservato-table/posto-riservato-table.component';
+
+// AoT requires an exported function for factories
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http);
+}
+
 
 @NgModule({
   declarations: [
@@ -30,14 +41,25 @@ import { ErrorComponent } from './components/error/error.component';
     SettimanaComponent,
     IscrizioneComponent,
     BackButtonComponent,
-    ErrorComponent
+    ErrorComponent,
+    PostiRiservatiComponent,
+    AdminComponent,
+    PostoRiservatoTableComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     AppRoutingModule,
     FormsModule,
-    NgbModule
+    NgbModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      },
+      defaultLanguage: 'it'
+    })
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,

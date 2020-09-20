@@ -1,0 +1,65 @@
+<h3>Posti riservati d'ufficio</h3>
+<app-posto-riservato-table [posti]="riservatiUfficio"></app-posto-riservato-table>
+<br/>
+<br/>
+<h3>Posti riservati preferenze</h3>
+<app-posto-riservato-table [posti]="riservatiPrenotazione"></app-posto-riservato-table>
+<br/>
+<br/>
+<h3>Aggiungi nuovo posto riservato</h3>
+<form #postoForm="ngForm" (ngSubmit)="onSubmit()">
+  <div class="form-group row">
+    <div class="col-md-3"><label>Tipo prenotazione</label>
+    </div>
+    <div class="col-md-3">
+      <select class="form-control" required [(ngModel)]="tipo"
+              name="slot">
+        <option *ngFor="let tipo of tipiPrenotazione" [ngValue]="tipo">{{tipo}}</option>
+      </select>
+    </div>
+  </div>
+  <div class="form-group row">
+    <div class="col-md-3"><label>Utente</label>
+    </div>
+    <div class="col-md-3">
+      <app-user-select></app-user-select>
+    </div>
+  </div>
+  <div class="form-group row">
+    <div class="col-md-3"><label>Giorno</label>
+    </div>
+    <div class="col-md-3">
+      <select class="form-control" required [(ngModel)]="giorno"
+              name="slot">
+        <option *ngFor="let giorno of [0,1,2,3,4,5,6]" [ngValue]="giorno">{{getGiornoFromNumero(giorno)}}</option>
+      </select>
+    </div>
+  </div>
+  <div class="form-group row">
+    <div class="col-md-3"><label>Ora di partenza</label>
+    </div>
+    <div class="col-md-3">
+      <select class="form-control" required [(ngModel)]="ora"
+              name="slot">
+        <option *ngFor="let ora of ore" [ngValue]="ora">{{ora}}</option>
+      </select>
+    </div>
+  </div>
+  <div class="form-group row">
+    <div class="col-md-3"><label>Numero ore</label>
+    </div>
+    <div class="col-md-3">
+      <select class="form-control" required [(ngModel)]="orePrenotazione"
+              name="slot">
+        <option *ngFor="let ora of oreMax" [ngValue]="ora">{{ora}}</option>
+      </select>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-4">
+      <button type="submit" [disabled]="!postoForm.form.valid" class="btn btn-success">Aggiungi</button>
+      <button type="reset" class="btn btn-default">Reset</button>
+    </div>
+  </div>
+</form>

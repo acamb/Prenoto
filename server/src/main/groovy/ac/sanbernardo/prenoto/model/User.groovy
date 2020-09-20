@@ -33,7 +33,7 @@ class User implements UppercaseTrait {
     boolean cambioPassword = true
     @NotNull
     String username
-    String role
+    String role = Roles.USER.name()
 
     @PrePersist
     void prePersist(){

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {ActivatedRoute,Router} from "@angular/router";
 
 @Component({
   selector: 'app-error',
@@ -7,9 +8,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ErrorComponent implements OnInit {
 
-  constructor() { }
-  //TODO[AC] nuova pipe per decodifica errore
+  erroCode: string;
+
+  constructor(private route: ActivatedRoute,private router : Router) {
+    this.erroCode=route.snapshot.params.code ? route.snapshot.params.code : "E_GENERICO";
+  }
+
   ngOnInit(): void {
   }
 
+  goHome() {
+    this.router.navigateByUrl("/");
+  }
 }

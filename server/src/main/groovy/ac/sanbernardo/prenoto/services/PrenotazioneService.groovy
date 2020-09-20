@@ -199,11 +199,35 @@ class PrenotazioneService {
         if(slotPrenotazione.postiRimanenti < 1){
             return false
         }
-        //TODO[AC] modificare per controllare che non ce ne sia gia' una lo stesso giorno e che non ci siano N iscrizioni in GIORNI diversi
-        //TODO[AC] se c'e' gia' un'iscrizione puo' andare bene a patto che il totale delle ore sia <= 3 e siano su ore contigue
-        if(getPrenotazioniPerArciere(userId).size() >= configurazioneRepository.findByChiaveAndValidoTrue(Configurazione.ConfigTokens.MAX_PRENOTAZIONI_UTENTE_SETTIMANA.name()).valore.toInteger()){
-            return false
+
+        int maxGiorni = configurazioneRepository.findByChiaveAndValidoTrue(Configurazione.ConfigTokens.MAX_PRENOTAZIONI_UTENTE_SETTIMANA.name()).valore.toInteger()
+        int maxOre = configurazioneRepository.findByChiaveAndValidoTrue(Configurazione.ConfigTokens.NUMERO_ORE_MAX.name()).valore.toInteger()
+
+        Prenotazione[] prenotazioniFatte = getPrenotazioniPerArciere(userId)
+        Prenotazione[] adiacenti = prenotazioniFatte.findAll{it.slotPrenotazione.giornoSettimana == slotPrenotazione.giornoSettimana}
+        //Se ci sono altre prenotazioni lo stesso giorno devo controllare che siano adiacenti e max ore
+        if(adiacenti){
+            if(adiacenti.size() >= maxOre){
+                return false
+            }
+            List<Integer> ore = adiacenti.collect{it.slotPrenotazione.ora}
+            ore << slotPrenotazione.ora
+            ore.sort()
+            //controllo che siano consecutive
+            for(int i = 0;i<ore.size()-1;i++){
+                if(!(ore[i]+1).equals(ore[i+1])){
+                    return false
+                }
+            }
+
         }
+        else {
+            int giorniPrenotati = getPrenotazioniPerArciere(userId).groupBy { it.slotPrenotazione.giornoSettimana }.keySet().size()
+            if (giorniPrenotati >= maxGiorni) {
+                return false
+            }
+        }
+
         return true
     }
 }

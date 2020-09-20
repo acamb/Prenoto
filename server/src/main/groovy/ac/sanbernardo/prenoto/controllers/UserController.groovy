@@ -30,7 +30,8 @@ class UserController {
                 nome: user.nome,
                 cognome: user.cognome,
                 active: user.active,
-                cambioPassword: user.cambioPassword
+                cambioPassword: user.cambioPassword,
+                role: user.role
         ]
     }
     @Post('/cambiaPassword')

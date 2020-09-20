@@ -14,4 +14,12 @@ export class UserService {
   getUser() : Observable<User> {
     return this.http.get<User>(getServer()+"api/user")
   }
+
+  getUserFromId(id: number) : Observable<User> {
+    return this.http.get<User>(getServer()+"api/user/"+id)
+  }
+
+  geAllUsers(): Observable<Array<User>> {
+    return this.http.get<Array<User>>(getServer()+"api/users")
+  }
 }

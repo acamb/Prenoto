@@ -11,10 +11,10 @@
         <a class="nav-link" href="#">Home</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/list" *appRestrictedRoles="['ROLE_OPERATOR','ROLE_ADMIN']">Gestione liste</a>
+        <a class="nav-link" href="/postiRiservati" *appRestrictedRoles="['OPERATOR','ADMIN']">Gestione liste</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link" href="/list" *appRestrictedRoles="['ROLE_ADMIN']">Admin</a>
+        <a class="nav-link" href="/admin" *appRestrictedRoles="['ADMIN']">Admin</a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="#" (click)="logout()">Logout</a>

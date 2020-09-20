@@ -9,4 +9,6 @@ interface ConfigurazioneRepository extends CrudRepository<Configurazione, Long> 
 
     Configurazione findByChiaveAndValidoTrue(String chiave);
 
+    List<Configurazione> findAllByValidoTrue();
+
 }

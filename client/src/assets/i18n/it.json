@@ -1,0 +1,7 @@
+{
+  "PRENOTAZIONE_KO_ORE" : "Numero di ore massimo superato!",
+  "PRENOTAZIONE_KO_POSTO" : "Non ci sono piu' posti per lo slot selezionato",
+  "PRENOTAZIONE_KO_NUM_PRENOTAZIONI" : "Numero di iscrizioni settimanali raggiunto",
+  "PRENOTAZIONE_KO_CONCURRENT" : "Piu' persone si sono iscritte nello slot nello stesso momento, riprova",
+  "E_GENERICO" : "Si e' verificato un errore, riprova"
+}
