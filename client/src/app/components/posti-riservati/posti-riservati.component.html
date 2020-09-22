@@ -1,9 +1,9 @@
 <h3>Posti riservati d'ufficio</h3>
-<app-posto-riservato-table [posti]="riservatiUfficio"></app-posto-riservato-table>
+<app-posto-riservato-table [posti]="riservatiUfficio" [users]="utenti" (cancellaPosto)="cancella($event)"></app-posto-riservato-table>
 <br/>
 <br/>
 <h3>Posti riservati preferenze</h3>
-<app-posto-riservato-table [posti]="riservatiPrenotazione"></app-posto-riservato-table>
+<app-posto-riservato-table [posti]="riservatiPrenotazione" [users]="utenti" (cancellaPosto)="cancella($event)"></app-posto-riservato-table>
 <br/>
 <br/>
 <h3>Aggiungi nuovo posto riservato</h3>
@@ -22,7 +22,12 @@
     <div class="col-md-3"><label>Utente</label>
     </div>
     <div class="col-md-3">
-      <app-user-select></app-user-select>
+      <input id="typeahead-prevent-manual-entry"  type="text" class="form-control" name="user" required
+             [(ngModel)]="user"
+             [ngbTypeahead]="searchUser"
+             [inputFormatter]="userFormatter"
+             [resultFormatter]="userFormatter"
+             [editable]='false' />
     </div>
   </div>
   <div class="form-group row">

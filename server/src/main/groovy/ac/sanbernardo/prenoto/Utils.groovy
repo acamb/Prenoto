@@ -6,7 +6,7 @@ class Utils {
         StringWriter sw = new StringWriter();
         PrintWriter pw = new PrintWriter(sw);
         e.printStackTrace(pw);
-        pw.toString()
+        sw.toString()
     }
 
 }

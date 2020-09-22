@@ -31,11 +31,7 @@ class AdminController {
     @Logged
     def creaSettimana(){
         try {
-            prenotazioneService.annullaSlotCorrenti()
-            prenotazioneService.creaSlotNuovaSettimana()
-            prenotazioneService.iscriviRiservati(TipoIscrizione.UFFICIO)
-            prenotazioneService.iscriviRiservati(TipoIscrizione.PREFERENZA)
-            prenotazioneService.impostaSlotInizializzati()
+            prenotazioneService.nuovaSettimana()
             [
                     success: true,
                     message: 'ok'

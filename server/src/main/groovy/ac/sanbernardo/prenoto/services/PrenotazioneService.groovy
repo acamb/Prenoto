@@ -187,6 +187,9 @@ class PrenotazioneService {
         )
         prenotazione = prenotazioneRepository.save(prenotazione)
         slot.postiRimanenti--
+        if(slot.postiRimanenti < 0){
+            slot.postiRimanenti = 0
+        }
         slotPrenotazioneRepository.save(slot)
         prenotazione
     }
@@ -229,5 +232,13 @@ class PrenotazioneService {
         }
 
         return true
+    }
+
+    def void nuovaSettimana() {
+        annullaSlotCorrenti()
+        creaSlotNuovaSettimana()
+        iscriviRiservati(TipoIscrizione.UFFICIO)
+        iscriviRiservati(TipoIscrizione.PREFERENZA)
+        impostaSlotInizializzati()
     }
 }

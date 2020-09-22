@@ -35,7 +35,7 @@ export class AppStateService {
   }
 
   async loadPostiPreferenza(){
-    this.postiRiservatiUfficio = await this.postiRiservatiService.getPostiPerTipo(TipoIscrizione.Preferenza).toPromise();
+    this.postiRiservatiPreferenza = await this.postiRiservatiService.getPostiPerTipo(TipoIscrizione.Preferenza).toPromise();
   }
 
   async loadUtenti(){
@@ -43,5 +43,10 @@ export class AppStateService {
       return;
     }
     this.utenti = await this.userService.geAllUsers().toPromise();
+  }
+
+  async loadPosti() {
+     this.loadPostiUfficio();
+     this.loadPostiPreferenza();
   }
 }

@@ -12,6 +12,7 @@ import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Delete
 import io.micronaut.http.annotation.Get
 import io.micronaut.http.annotation.Post
+import io.micronaut.http.annotation.QueryValue
 import io.micronaut.http.annotation.RequestAttribute
 import io.micronaut.security.annotation.Secured
 import io.micronaut.security.rules.SecurityRule
@@ -36,14 +37,11 @@ class PostoRiservatoController {
 
             User user = userRepository.findById(it.userId).get()
             [
+                    id: it.id,
                     giorno:    it.giorno,
                     ora:       it.ora,
                     numeroOre: it.numeroOre,
-                    user:      [
-                            id: user.id,
-                            nome: user.nome,
-                            cognome: user.cognome
-                    ],
+                    userId : it.userId,
                     tipoIscrizione: it.tipoIscrizione
             ]
         }
@@ -58,7 +56,7 @@ class PostoRiservatoController {
 
     @Delete("/")
     @RolesAllowed(["OPERATOR","ADMIN"])
-    def delete(@RequestAttribute Long id){
+    def delete(@QueryValue Long id){
         postoRiservatoService.eliminaPostoRiservato(id)
         HttpResponse.ok()
     }

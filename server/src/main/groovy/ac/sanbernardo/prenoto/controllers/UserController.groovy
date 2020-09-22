@@ -21,6 +21,22 @@ class UserController {
     @Inject
     UserService userService
 
+    @Get("/list")
+    def getUsers(){
+        userService.getAllUsers()
+            .collect{ user ->
+                [
+                        id: user.id,
+                        username: user.username,
+                        nome: user.nome,
+                        cognome: user.cognome,
+                        active: user.active,
+                        cambioPassword: user.cambioPassword,
+                        role: user.role
+                ]
+            }
+    }
+
     @Get("/")
     def getUser(@Nullable Principal principal){
         User user = userService.getUser(principal.getName())

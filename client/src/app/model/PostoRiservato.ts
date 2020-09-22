@@ -5,6 +5,6 @@ export class PostoRiservato{
   giorno: number
   ora: number
   numeroOre: number
-  tipoIcrizione: TipoIscrizione
+  tipoIscrizione: TipoIscrizione
   userId: number
 }

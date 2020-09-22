@@ -1,5 +1,7 @@
 package ac.sanbernardo.prenoto.model
 
+import io.micronaut.data.annotation.Where
+
 import javax.persistence.Table
 import javax.persistence.Version
 import javax.validation.constraints.NotNull
@@ -11,6 +13,7 @@ import javax.persistence.Id
 import javax.persistence.ManyToOne
 
 @Entity(name = "SLOT_PRENOTAZIONE")
+@Where("active = 1")
 class SlotPrenotazione {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

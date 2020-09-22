@@ -39,4 +39,8 @@ class UserService {
         userDb.cambioPassword = false
         userRepository.save(userDb)
     }
+
+    List<User> getAllUsers(){
+        return userRepository.findAllByActiveTrue();
+    }
 }

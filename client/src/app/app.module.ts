@@ -24,6 +24,8 @@ import {TranslateHttpLoader} from "@ngx-translate/http-loader";
 import { PostiRiservatiComponent } from './components/posti-riservati/posti-riservati.component';
 import { AdminComponent } from './components/admin/admin.component';
 import { PostoRiservatoTableComponent } from './components/posto-riservato-table/posto-riservato-table.component';
+import {PostiResolver} from "./resolvers/PostiResolver";
+import {UsersResolver} from "./resolvers/UsersResolver";
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -69,7 +71,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     AuthenticationService,
     AuthGuard,
     IscrizioniUtenteResolver,
-    SettimanaResolver
+    SettimanaResolver,
+    PostiResolver,
+    UsersResolver
 
   ],
   bootstrap: [AppComponent]

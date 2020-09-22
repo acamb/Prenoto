@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
 import {PostoRiservato} from "../../model/PostoRiservato";
 import {User} from "../../model/User";
 import { getGiornoFromNumero } from 'src/app/services/Utils';
@@ -8,7 +8,7 @@ import { getGiornoFromNumero } from 'src/app/services/Utils';
   templateUrl: './posto-riservato-table.component.html',
   styleUrls: ['./posto-riservato-table.component.scss']
 })
-export class PostoRiservatoTableComponent implements OnInit {
+export class PostoRiservatoTableComponent implements OnInit,OnChanges {
 
   @Input()
   posti: Array<PostoRiservato>
@@ -29,7 +29,14 @@ export class PostoRiservatoTableComponent implements OnInit {
     this.refresh();
   }
 
+  ngOnChanges(changes: import("@angular/core").SimpleChanges): void {
+        this.refresh();
+    }
+
+
+
   ngOnInit(): void {
+    this.refresh()
   }
 
   refresh() {

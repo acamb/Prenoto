@@ -20,6 +20,6 @@ export class UserService {
   }
 
   geAllUsers(): Observable<Array<User>> {
-    return this.http.get<Array<User>>(getServer()+"api/users")
+    return this.http.get<Array<User>>(getServer()+"api/user/list")
   }
 }

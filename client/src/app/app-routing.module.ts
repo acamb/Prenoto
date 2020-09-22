@@ -10,6 +10,8 @@ import {IscrizioneComponent} from "./components/iscrizione/iscrizione.component"
 import {ErrorComponent} from "./components/error/error.component";
 import {PostiRiservatiComponent} from "./components/posti-riservati/posti-riservati.component";
 import {AdminComponent} from "./components/admin/admin.component";
+import {PostiResolver} from "./resolvers/PostiResolver";
+import {UsersResolver} from "./resolvers/UsersResolver";
 
 
 const routes: Routes = [
@@ -40,7 +42,11 @@ const routes: Routes = [
       },
       {
         path: 'postiRiservati',
-        component: PostiRiservatiComponent
+        component: PostiRiservatiComponent,
+        resolve: {
+          posti: PostiResolver,
+          users: UsersResolver
+        }
       },
       {
         path: 'admin',
