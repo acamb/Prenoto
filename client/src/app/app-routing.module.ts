@@ -12,6 +12,9 @@ import {PostiRiservatiComponent} from "./components/posti-riservati/posti-riserv
 import {AdminComponent} from "./components/admin/admin.component";
 import {PostiResolver} from "./resolvers/PostiResolver";
 import {UsersResolver} from "./resolvers/UsersResolver";
+import {ParametriResolver} from "./resolvers/ParametriResolver";
+import {CambioPasswordComponent} from "./components/cambio-password/cambio-password.component";
+import {PasswordTemporaneaGuard} from "./guards/password-temporanea.guard";
 
 
 const routes: Routes = [
@@ -25,16 +28,25 @@ const routes: Routes = [
     runGuardsAndResolvers: 'always',
     children: [
       {
+        path: 'password',
+        component: CambioPasswordComponent
+      },
+      {
         path: 'home',
         component: HomeComponent,
         resolve: {
           iscrizioni: IscrizioniUtenteResolver,
           settimana: SettimanaResolver
-        }
+        },
+        canActivate: [PasswordTemporaneaGuard]
       },
       {
         path: 'iscrivi/:giorno',
-        component: IscrizioneComponent
+        component: IscrizioneComponent,
+        resolve: {
+          parametri: ParametriResolver
+        },
+        canActivate: [PasswordTemporaneaGuard]
       },
       {
         path: 'error/:code',
@@ -45,12 +57,15 @@ const routes: Routes = [
         component: PostiRiservatiComponent,
         resolve: {
           posti: PostiResolver,
-          users: UsersResolver
-        }
+          users: UsersResolver,
+          parametri: ParametriResolver
+        },
+        canActivate: [PasswordTemporaneaGuard]
       },
       {
         path: 'admin',
-        component: AdminComponent
+        component: AdminComponent,
+        canActivate: [PasswordTemporaneaGuard]
       },
       {
         path: '',

@@ -26,6 +26,8 @@ import { AdminComponent } from './components/admin/admin.component';
 import { PostoRiservatoTableComponent } from './components/posto-riservato-table/posto-riservato-table.component';
 import {PostiResolver} from "./resolvers/PostiResolver";
 import {UsersResolver} from "./resolvers/UsersResolver";
+import {ParametriResolver} from "./resolvers/ParametriResolver";
+import { CambioPasswordComponent } from './components/cambio-password/cambio-password.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -46,7 +48,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     ErrorComponent,
     PostiRiservatiComponent,
     AdminComponent,
-    PostoRiservatoTableComponent
+    PostoRiservatoTableComponent,
+    CambioPasswordComponent
   ],
   imports: [
     BrowserModule,
@@ -73,8 +76,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     IscrizioniUtenteResolver,
     SettimanaResolver,
     PostiResolver,
-    UsersResolver
-
+    UsersResolver,
+    ParametriResolver
   ],
   bootstrap: [AppComponent]
 })

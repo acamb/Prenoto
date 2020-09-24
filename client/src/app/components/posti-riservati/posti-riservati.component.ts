@@ -6,6 +6,7 @@ import {getGiornoFromNumero} from "../../services/Utils";
 import {PostiRiservatiService, TipoIscrizione} from "../../services/posti-riservati.service";
 import {Observable} from "rxjs";
 import {debounceTime, distinctUntilChanged, filter, map} from "rxjs/operators";
+import {ConfigTokens} from "../../model/Configurazione";
 
 @Component({
   selector: 'app-posti-riservati',
@@ -21,10 +22,10 @@ export class PostiRiservatiComponent implements OnInit {
   giorno: number;
   ora: number;
   orePrenotazione: number;
-  user: User;
+  user: User
 
-  ore = [9,10,11,12,13,14,15,16,17,18] //TODO[AC] da configurazione
-  oreMax = [1,2,3] //TODO[AC] da configurazione
+  ore: Array<number>;
+  oreMax: Array<number>;
   userFormatter = (user: User) => user.cognome + " " + user.nome;
 
   searchUser = (text$: Observable<string>) => text$.pipe(
@@ -43,7 +44,17 @@ export class PostiRiservatiComponent implements OnInit {
     return this.appState.utenti;
   }
 
-  constructor(private appState : AppStateService,private postiRiservatiService: PostiRiservatiService) { }
+  constructor(private appState : AppStateService,private postiRiservatiService: PostiRiservatiService) {
+
+    this.ore = [];
+    for(let i : number = +appState.parametri.find(p => p.chiave=ConfigTokens.ORA_INIZIO).valore;i<=+appState.parametri.find(p => p.chiave=ConfigTokens.ORA_FINE).valore;i++){
+        this.ore.push(i);
+    }
+    this.oreMax=[];
+    for(let i = 1;i<=+appState.parametri.find(p => p.chiave=ConfigTokens.NUMERO_ORE_MAX).valore;i++){
+      this.oreMax.push(i);
+    }
+  }
 
   ngOnInit(): void {
   }

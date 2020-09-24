@@ -133,7 +133,7 @@ class PrenotazioneService {
         int oraFine = configurazioneRepository.findByChiaveAndValidoTrue(Configurazione.ConfigTokens.ORA_FINE.name()).valore.toInteger()
         int posti = configurazioneRepository.findByChiaveAndValidoTrue(Configurazione.ConfigTokens.POSTI_PER_ORA.name()).valore.toInteger()
         (0..6).each { giorno ->
-            Date data = new Date()
+            Date data = new Date() //TODO[AC] deve essere l'inizio settimana
             use(TimeCategory){
                 data = data + giorno.days
             }

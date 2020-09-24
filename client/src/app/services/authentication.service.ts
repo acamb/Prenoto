@@ -8,6 +8,7 @@ import {User} from "../model/User";
 import {map} from "rxjs/operators";
 import {UserService} from "./user.service";
 import {AppStateService} from "./app-state.service";
+import {ApiResult} from "../model/ApiResult";
 
 
 @Injectable()
@@ -58,28 +59,36 @@ export class AuthenticationService {
     this.subject.next(JSON.parse( sessionStorage.getItem('user')));
    }
 
-  authenticate(username: string, password: string): Observable<boolean>{
-    return this.httpClient.post<AuthResponse>(getServer() + 'login', {username: username, password: password})
-      .pipe(
-      map(resp => {
-        if (resp.access_token === undefined){
-          return false;
-        }
-        sessionStorage.setItem('username', JSON.stringify(resp.username));
-        sessionStorage.setItem('token', 'Bearer ' + resp.access_token);
-        this.userService.getUser().subscribe(user => {
-            sessionStorage.setItem('user', JSON.stringify(user));
-            this.subject.next(user);
-        })
-        return true;
-      },error => {
+  async authenticate(username: string, password: string): Promise<boolean>{
+    try {
+      let resp = await this.httpClient.post<AuthResponse>(getServer() + 'login', {
+        username: username,
+        password: password
+      }).toPromise();
+      if (resp?.access_token === undefined) {
         return false;
-      })
-      )
+      }
+      sessionStorage.setItem('username', JSON.stringify(resp.username));
+      sessionStorage.setItem('token', 'Bearer ' + resp.access_token);
+      let user = await this.userService.getUser().toPromise();
+      sessionStorage.setItem('user', JSON.stringify(user));
+      this.subject.next(user);
+      return true;
+    }
+    catch(ex){
+      return false
+    }
   }
 
   goToLogin() {
     this.router.navigateByUrl('/authenticate');
+  }
+
+  cambioPassword(oldPassword: string, newPassword: string) : Observable<ApiResult>{
+    return this.httpClient.post<ApiResult>(getServer()+"api/user/cambiaPassword",{
+        vecchiaPassword:oldPassword,
+        nuovaPassword: newPassword
+    });
   }
 }
 

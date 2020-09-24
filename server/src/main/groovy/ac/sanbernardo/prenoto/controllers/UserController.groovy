@@ -51,7 +51,7 @@ class UserController {
         ]
     }
     @Post('/cambiaPassword')
-    def cambiaPassword(@Body CambioPasswordRequest request,@Nullable Principal){
+    def cambiaPassword(@Body CambioPasswordRequest request,@Nullable Principal principal){
         User user = userService.getUser(principal.getName())
         try {
             userService.aggiornaPassword(user, request.vecchiaPassword, request.nuovaPassword)

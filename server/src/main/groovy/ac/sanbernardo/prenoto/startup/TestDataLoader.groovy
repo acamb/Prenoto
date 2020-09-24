@@ -101,7 +101,7 @@ class TestDataLoader {
                 valore: 3,
                 valido: true
         ))
-        prenotazioneService.creaSlotNuovaSettimana()
-        prenotazioneService.impostaSlotInizializzati()
+        //prenotazioneService.creaSlotNuovaSettimana()
+        //prenotazioneService.impostaSlotInizializzati()
     }
 }

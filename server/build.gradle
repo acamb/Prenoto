@@ -83,5 +83,20 @@ tasks.withType(JavaExec) {
     }
 }
 
+def webappDir = "$projectDir/../client"
+task buildFrontend(type:Exec) {
+    workingDir "$webappDir"
+    commandLine "npm", "run", "package"
+}
+
+
+processResources{
+    if (gradle.startParameter.taskNames.contains("assemble")) {
+        dependsOn "buildFrontend"
+    }
+    else{
+        println "skipping frontend build"
+    }
+}
 
 

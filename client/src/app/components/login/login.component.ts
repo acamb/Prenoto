@@ -22,17 +22,12 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  onSubmit(){
-    this.authService.authenticate(this.username,this.password).pipe(map(result => {
-      if(result){
-        this.router.navigateByUrl("/")
-      }
-      else{
-        this.wrongLogin=true;
-      }
-    }),
-      take(1)
-    ).subscribe();
+  async onSubmit() {
+    let result = await this.authService.authenticate(this.username, this.password)
+    if (result) {
+      this.router.navigateByUrl("/")
+    } else {
+      this.wrongLogin = true;
+    }
   }
-
 }

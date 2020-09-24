@@ -7,8 +7,10 @@ import ac.sanbernardo.prenoto.repositories.UserRepository
 
 import javax.inject.Inject
 import javax.inject.Singleton
+import javax.transaction.Transactional
 
 @Singleton
+@Transactional
 class UserService {
 
     @Inject
@@ -32,7 +34,7 @@ class UserService {
 
     void aggiornaPassword(User user, String oldPassword, String newPassword){
         User userDb = userRepository.findById(user.id).get()
-        if(userDb.password != oldPassword){
+        if(!encoder.matches(oldPassword,userDb.password)){
             throw new RuntimeException("wrong password")
         }
         userDb.password = encoder.encode(newPassword)

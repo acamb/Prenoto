@@ -5,6 +5,7 @@ import {AppStateService} from "../../services/app-state.service";
 import {PrenotazioniService} from "../../services/prenotazioni.service";
 import {Slot} from "../../model/Slot";
 import {AuthenticationService} from "../../services/authentication.service";
+import {ConfigTokens} from "../../model/Configurazione";
 
 @Component({
   selector: 'app-iscrizione',
@@ -16,7 +17,7 @@ export class IscrizioneComponent implements OnInit {
   giorno: number;
   slotScelto: Slot;
   ore: number;
-  oreList = [1,2,3] //TODO[AC] da configurazione
+  oreList : Array<number>;
 
   get slotDisponibili() : Array<Slot>{
     return this.appState.settimana.giorni.find(g => g.giorno == this.giorno).slots.filter(s => s.posti > 0);
@@ -31,6 +32,11 @@ export class IscrizioneComponent implements OnInit {
     this.giorno = route.snapshot.params.giorno
     if(!this.giorno || !this.appState.settimana){
       this.router.navigateByUrl("/")
+    }
+    this.oreList=[];
+    this.oreList=[];
+    for(let i = 1;i<=+appState.parametri.find(p => p.chiave=ConfigTokens.NUMERO_ORE_MAX).valore;i++){
+      this.oreList.push(i);
     }
   }
 

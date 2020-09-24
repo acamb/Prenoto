@@ -7,8 +7,10 @@ import ac.sanbernardo.prenoto.repositories.PostoRiservatoRepository
 
 import javax.inject.Inject
 import javax.inject.Singleton
+import javax.transaction.Transactional
 
 @Singleton
+@Transactional
 class PostoRiservatoService {
 
     @Inject
