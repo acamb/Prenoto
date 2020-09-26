@@ -24,8 +24,17 @@ export class PostiRiservatiComponent implements OnInit {
   orePrenotazione: number;
   user: User
 
+  get oreMax(): Array<number> {
+    if(this.tipo == TipoIscrizione.Ufficio){
+      return [1,2,3,4,5,6,7,8,9,10,11,12];
+    }
+    else{
+      return this._oreMax;
+    }
+  }
+
   ore: Array<number>;
-  oreMax: Array<number>;
+  _oreMax: Array<number>;
   userFormatter = (user: User) => user.cognome + " " + user.nome;
 
   searchUser = (text$: Observable<string>) => text$.pipe(
@@ -47,12 +56,12 @@ export class PostiRiservatiComponent implements OnInit {
   constructor(private appState : AppStateService,private postiRiservatiService: PostiRiservatiService) {
 
     this.ore = [];
-    for(let i : number = +appState.parametri.find(p => p.chiave=ConfigTokens.ORA_INIZIO).valore;i<=+appState.parametri.find(p => p.chiave=ConfigTokens.ORA_FINE).valore;i++){
+    for(let i = +appState.parametri.find(p => p.chiave==ConfigTokens.ORA_INIZIO).valore;i<=+appState.parametri.find(p => p.chiave==ConfigTokens.ORA_FINE).valore;i++){
         this.ore.push(i);
     }
-    this.oreMax=[];
+    this._oreMax=[];
     for(let i = 1;i<=+appState.parametri.find(p => p.chiave=ConfigTokens.NUMERO_ORE_MAX).valore;i++){
-      this.oreMax.push(i);
+      this._oreMax.push(i);
     }
   }
 

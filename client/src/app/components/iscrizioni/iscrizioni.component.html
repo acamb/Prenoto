@@ -3,14 +3,14 @@
     Iscrizioni attive
   </div>
   <div class="card-body">
-    <div *ngFor="let giorno of giorni">
-      {{ getGiornoFromNumero(giorno)}}
+    <div *ngFor="let giorno of giorni" class="card card-giorno">
+      <h3>{{ getGiornoFromNumero(giorno)}}</h3>
       <ul>
         <li *ngFor="let iscrizione of getOre(giorno)">
           Ore {{iscrizione.ora}} <button class="btn btn-danger btn-sm" (click)="elimina(iscrizione.id)">Elimina</button>
         </li>
-        <button class="btn btn-danger" (click)="eliminaGiorno(giorno)">Elimina tutte per questo giorno</button>
       </ul>
+      <div><button class="btn btn-danger" (click)="eliminaGiorno(giorno)">Elimina tutte per questo giorno</button></div>
     </div>
   </div>
 </div>

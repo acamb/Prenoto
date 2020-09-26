@@ -133,7 +133,14 @@ class PrenotazioneService {
         int oraFine = configurazioneRepository.findByChiaveAndValidoTrue(Configurazione.ConfigTokens.ORA_FINE.name()).valore.toInteger()
         int posti = configurazioneRepository.findByChiaveAndValidoTrue(Configurazione.ConfigTokens.POSTI_PER_ORA.name()).valore.toInteger()
         (0..6).each { giorno ->
-            Date data = new Date() //TODO[AC] deve essere l'inizio settimana
+            Calendar cal = Calendar.getInstance();
+            cal.set(Calendar.HOUR_OF_DAY, configurazioneRepository.findByChiaveAndValidoTrue(Configurazione.ConfigTokens.ORA_FINE.name()).valore.toInteger()); // ! clear would not reset the hour of day !
+            cal.clear(Calendar.MINUTE)
+            cal.clear(Calendar.SECOND)
+            cal.clear(Calendar.MILLISECOND);
+
+            cal.set(Calendar.DAY_OF_WEEK, cal.getFirstDayOfWeek());
+            Date data = cal.getTime()
             use(TimeCategory){
                 data = data + giorno.days
             }
