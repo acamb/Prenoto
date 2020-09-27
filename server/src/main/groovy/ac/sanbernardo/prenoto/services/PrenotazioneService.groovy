@@ -35,6 +35,8 @@ class PrenotazioneService {
     @Inject
     ConfigurazioneRepository configurazioneRepository
 
+    Logger log = LoggerFactory.getLogger(PrenotazioneService.class);
+
     /**
      *
      * @param user
@@ -106,10 +108,16 @@ class PrenotazioneService {
         }
     }
 
+    @Logged
     List<SlotPrenotazione> getSlotsCollegati(SlotPrenotazione slotPartenza,int numeroOre){
         List<SlotPrenotazione> slots = []
         (0..numeroOre-1).each { ora ->
-            slots << slotPrenotazioneRepository.findByGiornoSettimanaAndOra(slotPartenza.giornoSettimana, (slotPartenza.ora+ora))
+            try {
+                slots << slotPrenotazioneRepository.findByGiornoSettimanaAndOra(slotPartenza.giornoSettimana, (slotPartenza.ora + ora))
+            }
+            catch(all){
+                log.warn("richiesto slot collegato che non esiste: " + slotPartenza.toString() + ", ora: ${ora}")
+            }
         }
         slots
     }
@@ -139,7 +147,7 @@ class PrenotazioneService {
             cal.clear(Calendar.SECOND)
             cal.clear(Calendar.MILLISECOND);
 
-            cal.set(Calendar.DAY_OF_WEEK, cal.getFirstDayOfWeek());
+            cal.set(Calendar.DAY_OF_WEEK, 2); //lunedi'
             Date data = cal.getTime()
             use(TimeCategory){
                 data = data + giorno.days
@@ -201,7 +209,7 @@ class PrenotazioneService {
         prenotazione
     }
 
-
+    @Logged
     boolean verificaIscrivibilita(SlotPrenotazione slotPrenotazione, TipoIscrizione tipoIscrizione,Long userId) {
         if(tipoIscrizione == TipoIscrizione.UFFICIO){
             return true
@@ -241,6 +249,7 @@ class PrenotazioneService {
         return true
     }
 
+    @Logged
     def void nuovaSettimana() {
         annullaSlotCorrenti()
         creaSlotNuovaSettimana()

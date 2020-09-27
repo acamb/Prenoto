@@ -7,7 +7,11 @@
       <h3>{{ getGiornoFromNumero(giorno)}}</h3>
       <ul>
         <li *ngFor="let iscrizione of getOre(giorno)">
-          Ore {{iscrizione.ora}} <button class="btn btn-danger btn-sm" (click)="elimina(iscrizione.id)">Elimina</button>
+          Ore {{iscrizione.ora}}
+          <button class="btn btn-danger btn-sm"
+                  (click)="elimina(iscrizione.id)"
+                  [disabled]="!canDelete(iscrizione,giorno)"
+          >Elimina</button>
         </li>
       </ul>
       <div><button class="btn btn-danger" (click)="eliminaGiorno(giorno)">Elimina tutte per questo giorno</button></div>

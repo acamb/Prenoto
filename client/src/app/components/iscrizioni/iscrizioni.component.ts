@@ -39,4 +39,15 @@ export class IscrizioniComponent implements OnInit {
     }
   }
 
+  canDelete(iscrizione: IscrizioneUtente,giorno: number){
+    let iscrizioniList = this.getOre(giorno)
+    if(iscrizioniList.findIndex( i => i.id == iscrizione.id) === 0){
+      return true;
+    }
+    if(iscrizioniList.findIndex( i => i.id == iscrizione.id) === iscrizioniList.length - 1){
+      return true;
+    }
+    return false;
+  }
+
 }

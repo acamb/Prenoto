@@ -3,18 +3,18 @@
   <thead>
   <tr>
     <th scope="col">Nome</th>
-    <th scope="col">Cognome</th>
     <th scope="col">Giorno</th>
     <th scope="col">Ora</th>
+    <th scope="col">N Ore</th>
     <th></th>
   </tr>
   </thead>
   <tbody>
   <tr *ngFor="let posto of postiFiltered">
-    <td scope="row">{{ getUser(posto.userId)?.nome }}</td>
-    <td scope="row">{{ getUser(posto.userId)?.cognome }}</td>
+    <td scope="row">{{ getUser(posto.userId)?.nome + " " + getUser(posto.userId)?.cognome }}</td>
     <td scope="row">{{ getGiornoFromNumero(posto.giorno) }}</td>
     <td scope="row">{{ posto.ora }}</td>
+    <td scope="row">{{ posto.numeroOre }}</td>
     <td scope="row"><button class="btn btn-danger" (click)="cancella(posto)">Cancella</button> </td>
   </tr>
   </tbody>

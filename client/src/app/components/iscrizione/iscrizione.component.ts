@@ -16,7 +16,7 @@ export class IscrizioneComponent implements OnInit {
 
   giorno: number;
   slotScelto: Slot;
-  ore: number;
+  ore: number = undefined;
   oreList : Array<number>;
 
   get slotDisponibili() : Array<Slot>{
@@ -38,6 +38,9 @@ export class IscrizioneComponent implements OnInit {
     for(let i = 1;i<=+appState.parametri.find(p => p.chiave=ConfigTokens.NUMERO_ORE_MAX).valore;i++){
       this.oreList.push(i);
     }
+    if(this.oreList.length > 0) {
+      this.ore = this.oreList[0];
+    }
   }
 
   getGiornoFromNumero=getGiornoFromNumero;
@@ -46,6 +49,9 @@ export class IscrizioneComponent implements OnInit {
   }
 
   async onSubmit(){
+    if(!this.slotScelto || this.ore === undefined || this.ore <0 ){
+      return false
+    }
     try {
       let result = await this.prenotazioniService.iscrivi(this.authService.user, this.slotScelto, this.ore).toPromise();
       console.log(JSON.stringify(result))
