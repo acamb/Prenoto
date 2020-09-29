@@ -257,4 +257,9 @@ class PrenotazioneService {
         iscriviRiservati(TipoIscrizione.PREFERENZA)
         impostaSlotInizializzati()
     }
+
+    @Logged
+    List<User> getUtentiIscritti(Long slotId){
+        slotPrenotazioneRepository.getUtentiIscritti(slotId)
+    }
 }

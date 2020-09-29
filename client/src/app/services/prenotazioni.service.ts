@@ -38,4 +38,8 @@ export class PrenotazioniService {
   cancella(id: number) : Observable<ApiResult> {
     return this.http.delete<ApiResult>(getServer() + `api/prenotazione?id=${id}`)
   }
+
+  getUtentiIscritti(slot: Slot): Observable<Array<User>>{
+    return this.http.get<Array<User>>(getServer() + "api/prenotazione/iscrittiPerSlot?slotId=" + slot.id)
+  }
 }
