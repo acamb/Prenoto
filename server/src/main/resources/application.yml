@@ -16,7 +16,7 @@ micronaut:
             generator:
               secret: changeMechangeMechangeMechangeMechangeMechangeMe
     interceptUrlMap:
-      - pattern: /*.html
+      - pattern: /**.html
         httpMethod: GET
         access:
           - isAnonymous()
@@ -24,11 +24,15 @@ micronaut:
         httpMethod: GET
         access:
           - isAnonymous()
-      - pattern: /*.js
+      - pattern: /**.js
         httpMethod: GET
         access:
           - isAnonymous()
-      - pattern: /*.css
+      - pattern: /**.css
+        httpMethod: GET
+        access:
+          - isAnonymous()
+      - pattern: /assets/i18n/**.json
         httpMethod: GET
         access:
           - isAnonymous()

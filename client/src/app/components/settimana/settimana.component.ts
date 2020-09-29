@@ -3,6 +3,10 @@ import {Settimana} from "../../model/Settimana";
 import {Slot} from "../../model/Slot";
 import {getGiornoFromNumero} from "../../services/Utils";
 import {Router} from "@angular/router";
+import {PrenotazioniService} from "../../services/prenotazioni.service";
+import {map} from "rxjs/operators";
+import {Observable} from "rxjs";
+import {NgbPopover} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: 'app-settimana',
@@ -16,7 +20,7 @@ export class SettimanaComponent implements OnInit {
 
   getGiornoFromNumero = getGiornoFromNumero;
 
-  constructor(private router: Router) {
+  constructor(private router: Router,private prenotazioniService : PrenotazioniService) {
   }
 
   get giorni() : Array<number> {
@@ -37,4 +41,7 @@ export class SettimanaComponent implements OnInit {
     this.router.navigateByUrl(`/iscrivi/${giorno}`);
   }
 
+  getUtenti(slot: Slot){
+    return this.prenotazioniService.getUtentiIscritti(slot)
+  }
 }

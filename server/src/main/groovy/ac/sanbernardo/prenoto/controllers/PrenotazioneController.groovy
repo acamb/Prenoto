@@ -48,7 +48,8 @@ class PrenotazioneController {
                                     giorno: slot.giornoSettimana,
                                     ora : slot.ora,
                                     posti: slot.postiRimanenti,
-                                    visibile: slot.data.after(new Date())
+                                    visibile: slot.data.after(new Date()),
+                                    iscritti: getIscrittiPerSlot(slot.id)
                             ]
                         }.asList()
                 ]
@@ -129,6 +130,18 @@ class PrenotazioneController {
                             ora: it.slotPrenotazione.ora
                     ]
                 }
+    }
+
+    @Get("/iscrittiPerSlot")
+    @Logged
+    def getIscrittiPerSlot(@QueryValue Long slotId){
+        prenotazioneService.getUtentiIscritti(slotId)
+            .collect{
+                [
+                        nome: it.nome,
+                        cognome: it.cognome,
+                ]
+            }
     }
 
 }
