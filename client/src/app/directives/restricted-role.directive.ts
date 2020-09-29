@@ -30,7 +30,8 @@ export class RestrictedRoleDirective implements OnInit{
       let roleFound = false;
     if (user && user.role && this.roles){ //logged in, and roles configured
       roleFound = this.roles.findIndex((element) => element === user.role) != -1;
-      if ( roleFound ) {
+      if ( roleFound) {
+        this.viewContainer.clear();
         this.viewContainer.createEmbeddedView(this.templateRef);
       }
       else {
