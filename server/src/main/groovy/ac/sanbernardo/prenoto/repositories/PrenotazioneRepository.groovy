@@ -17,6 +17,7 @@ interface PrenotazioneRepository extends CrudRepository<Prenotazione,Long>{
               WHERE p.slot_prenotazione_id = s.id
               AND p.user_id = :userId
               AND s.active = 1
+              ORDER BY giorno_settimana,ora
             """,nativeQuery = true)
     @Nullable List<Prenotazione> prenotazioniAttive(Long userId)
 

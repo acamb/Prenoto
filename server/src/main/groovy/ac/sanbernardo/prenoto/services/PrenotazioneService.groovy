@@ -77,6 +77,22 @@ class PrenotazioneService {
         if(!prenotazioneDb || prenotazioneDb.userId != user.id){
             throw new RuntimeException("La prenotazione non esiste")
         }
+        List<Prenotazione> prenotazioniCollegate = getPrenotazioniPerArciere(user.id)
+                .findAll{
+                    it.slotPrenotazione.giornoSettimana == prenotazioneDb.slotPrenotazione.giornoSettimana
+                }
+        int idx = prenotazioniCollegate.indexOf(prenotazioneDb)
+        if(idx != 0 && idx != prenotazioniCollegate.size()-1){
+            throw new RuntimeException("Impossibile cancellare la prenotazione")
+        }
+        use(TimeCategory) {
+            Calendar c = new GregorianCalendar()
+            c.setTime(prenotazioneDb.slotPrenotazione.data)
+            c.set(Calendar.HOUR_OF_DAY,prenotazioneDb.slotPrenotazione.ora)
+            if(c.getTime() < new Date()){
+                throw new RuntimeException("Impossibile cancellare la prenotazione")
+            }
+        }
         slot.postiRimanenti++
         prenotazioneRepository.delete(prenotazioneDb)
         slotPrenotazioneRepository.save(slot)
