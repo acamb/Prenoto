@@ -8,7 +8,7 @@ import {AuthenticationService} from "./services/authentication.service";
 })
 export class AppComponent {
 
-  isNavbarCollapsed: boolean
+  isNavbarCollapsed = true;
 
   constructor(private authService: AuthenticationService) {
   }
