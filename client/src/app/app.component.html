@@ -14,6 +14,9 @@
         <a class="nav-link" routerLink="/postiRiservati" (click)="isNavbarCollapsed = true" *appRestrictedRoles="['OPERATOR','ADMIN']">Gestione liste</a>
       </li>
       <li class="nav-item">
+        <a class="nav-link" routerLink="/riepilogo" (click)="isNavbarCollapsed = true" *appRestrictedRoles="['OPERATOR','ADMIN']">Riepilogo</a>
+      </li>
+      <li class="nav-item">
         <a class="nav-link" routerLink="/admin" (click)="isNavbarCollapsed = true" *appRestrictedRoles="['ADMIN']">Admin</a>
       </li>
       <li class="nav-item">

@@ -18,6 +18,7 @@ export class IscrizioneComponent implements OnInit {
   slotScelto: Slot;
   ore: number = undefined;
   oreList : Array<number>;
+  showSlotNelPassatoToast = false;
 
   get slotDisponibili() : Array<Slot>{
     return this.appState.settimana.giorni.find(g => g.giorno == this.giorno).slots.filter(s => s.posti > 0);
@@ -50,6 +51,10 @@ export class IscrizioneComponent implements OnInit {
 
   async onSubmit(){
     if(!this.slotScelto || this.ore === undefined || this.ore <0 ){
+      return false
+    }
+    if(this.slotScelto.dataOraSlot < new Date()){
+      this.showSlotNelPassatoToast=true
       return false
     }
     try {

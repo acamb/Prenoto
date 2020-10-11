@@ -1,12 +1,12 @@
 <div class="card" *ngIf="iscrizioni && iscrizioni.length > 0">
   <div class="card-header">
-    Iscrizioni attive
+    <h4>Iscrizioni attive</h4>
   </div>
   <div class="card-body">
     <div *ngFor="let giorno of giorni" class="card card-giorno">
-      <h3>{{ getGiornoFromNumero(giorno)}}</h3>
-      <ul>
-        <li *ngFor="let iscrizione of getOre(giorno)">
+      <h5 class="text-center">{{ getGiornoFromNumero(giorno)}}</h5>
+      <ul class="list-group">
+        <li class="list-group-item" *ngFor="let iscrizione of getOre(giorno)">
           Ore {{iscrizione.ora}}
           <button class="btn btn-danger btn-sm"
                   (click)="elimina(iscrizione.id)"
@@ -25,7 +25,7 @@
 </div>
 <div class="card" *ngIf="!iscrizioni || iscrizioni.length == 0">
   <div class="card-header">
-    Iscrizioni attive
+    <h4>Iscrizioni attive</h4>
   </div>
   <div class="card-body">
     <i>Non hai iscrizioni per questa settimana</i>

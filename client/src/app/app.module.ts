@@ -28,6 +28,7 @@ import {PostiResolver} from "./resolvers/PostiResolver";
 import {UsersResolver} from "./resolvers/UsersResolver";
 import {ParametriResolver} from "./resolvers/ParametriResolver";
 import { CambioPasswordComponent } from './components/cambio-password/cambio-password.component';
+import { RiepilogoIscrizioniComponent } from './components/riepilogo-iscrizioni/riepilogo-iscrizioni.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -49,7 +50,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     PostiRiservatiComponent,
     AdminComponent,
     PostoRiservatoTableComponent,
-    CambioPasswordComponent
+    CambioPasswordComponent,
+    RiepilogoIscrizioniComponent
   ],
   imports: [
     BrowserModule,

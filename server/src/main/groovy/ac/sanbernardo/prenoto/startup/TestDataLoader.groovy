@@ -93,7 +93,7 @@ class TestDataLoader {
         ))
         configurazioneRepository.save(new Configurazione(
                 chiave: Configurazione.ConfigTokens.ORA_FINE.name(),
-                valore: 18,
+                valore: 20,
                 valido: true
         ))
         configurazioneRepository.save(new Configurazione(

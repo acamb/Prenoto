@@ -47,6 +47,10 @@ dependencies {
         exclude group: "org.codehaus.groovy", module: "groovy-all"
     }
     testImplementation("io.micronaut.test:micronaut-test-spock")
+    compile 'org.codehaus.groovy:groovy-all:3.0.3'
+    // https://mvnrepository.com/artifact/org.mindrot/jbcrypt
+    compile group: 'org.mindrot', name: 'jbcrypt', version: '0.4'
+
 }
 
 test.classpath += configurations.developmentOnly

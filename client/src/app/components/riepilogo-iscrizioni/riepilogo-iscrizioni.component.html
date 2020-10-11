@@ -1,0 +1,11 @@
+<H4>Riepilogo iscrizioni</H4>
+<div class="card" *ngFor="let giorno of getGiorniConIscrizioni()">
+  <div class="card-title"><h5 class="text-center">{{getGiornoFromNumero(giorno.giorno)}}</h5></div>
+  <div class="card-body">
+  <ul class="list-group">
+    <li class="list-group-item" *ngFor="let slot of getSlotConIscrittiPerGiorno(giorno.giorno)">
+      Ore {{ slot.ora }} : <span class="badge badge-light" *ngFor="let user of slot.iscritti">{{ user.cognome + " " + user.nome }}</span>
+    </li>
+  </ul>
+  </div>
+</div>

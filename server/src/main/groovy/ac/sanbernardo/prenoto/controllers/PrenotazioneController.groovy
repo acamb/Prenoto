@@ -2,6 +2,7 @@ package ac.sanbernardo.prenoto.controllers
 
 import ac.sanbernardo.prenoto.aop.Logged
 import ac.sanbernardo.prenoto.controllers.payloads.IscriviRequestBody
+import ac.sanbernardo.prenoto.exceptions.IscrizioneNelPassatoNonCancellabileException
 import ac.sanbernardo.prenoto.exceptions.MaxNumeroIscrizioniSuperateException
 import ac.sanbernardo.prenoto.exceptions.NumeroOreException
 import ac.sanbernardo.prenoto.exceptions.PostiEsauritiException
@@ -42,6 +43,7 @@ class PrenotazioneController {
             prenotazioneService.getSlotsAttuali().groupBy {it.giornoSettimana}.collect { giorno ->
                 [
                         giorno: giorno.key,
+                        data: giorno.value?.get(0)?.data,
                         slots : giorno.value.collect{ slot ->
                             [
                                     id: slot.id,
@@ -49,7 +51,8 @@ class PrenotazioneController {
                                     ora : slot.ora,
                                     posti: slot.postiRimanenti,
                                     visibile: slot.data.after(new Date()),
-                                    iscritti: getIscrittiPerSlot(slot.id)
+                                    iscritti: getIscrittiPerSlot(slot.id),
+                                    dataOraSlot: slot.getDataOraSlot()
                             ]
                         }.asList()
                 ]
@@ -104,6 +107,11 @@ class PrenotazioneController {
             prenotazioneService.cancellaPrenotazione(userService.getUser(principal.name), id)
             [
                     success: true
+            ]
+        }catch(IscrizioneNelPassatoNonCancellabileException ex){
+            [
+                    success: false,
+                    message: 'ISCRIZIONE_NEL_PASSATO_NON_CANCELLABILE'
             ]
         }catch(all){
             [
