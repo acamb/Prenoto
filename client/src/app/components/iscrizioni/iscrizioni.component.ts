@@ -13,6 +13,8 @@ export class IscrizioniComponent implements OnInit {
   iscrizioni: Array<IscrizioneUtente>
   @Output()
   eliminaEmitter = new EventEmitter<number>()
+  @Output()
+  eliminaTutteEmitter = new EventEmitter<Array<number>>()
 
   getGiornoFromNumero = getGiornoFromNumero;
 
@@ -34,9 +36,11 @@ export class IscrizioniComponent implements OnInit {
   }
 
   eliminaGiorno(giorno: number){
+    let ids = []
     for(let id of this.getOre(giorno).map(ora => ora.id)){
-      this.elimina(id);
+      ids.push(id)
     }
+    this.eliminaTutteEmitter.emit(ids);
   }
 
   canDelete(iscrizione: IscrizioneUtente,giorno: number){

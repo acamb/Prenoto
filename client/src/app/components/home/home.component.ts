@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {Settimana} from "../../model/Settimana";
 import {IscrizioneUtente} from "../../model/IscrizioneUtente";
 import {AppStateService} from "../../services/app-state.service";
@@ -19,16 +19,42 @@ export class HomeComponent implements OnInit {
     return this.appState.iscrizioni
   }
 
-  constructor(private route: ActivatedRoute,private appState: AppStateService,private prenotazioniService: PrenotazioniService) {
+  constructor(private route: ActivatedRoute,
+              private appState: AppStateService,
+              private prenotazioniService: PrenotazioniService,
+              private router: Router) {
   }
 
   ngOnInit(): void {
   }
 
   async eliminaIscrizione(id){
-    await this.prenotazioniService.cancella(id).toPromise();
-    this.appState.loadIscrizioni();
-    return this.appState.loadSettimana();
+    let resp = await this.prenotazioniService.cancella(id).toPromise();
+    if(resp.success){
+      this.appState.loadIscrizioni();
+      await this.appState.loadSettimana();
+      return true;
+    }
+    else{
+      this.router.navigateByUrl(`/error/${resp.message}`);
+      return false;
+    }
   }
+
+  async eliminaIscrizioniGiorno(ids){
+    let res = false;
+    for(let id of ids){
+      try {
+        res = await this.eliminaIscrizione(id);
+      }
+      catch(e){
+        res = false;
+      }
+      if(!res){
+        break;
+      }
+    }
+  }
+
 
 }

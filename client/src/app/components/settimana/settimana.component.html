@@ -1,24 +1,24 @@
 <div class="card" *ngIf="settimana">
   <div class="card-header">
-    Slot iscrizioni
+    <h4>Slot iscrizioni</h4>
   </div>
   <div class="card-body">
     <div *ngFor="let giorno of giorni">
       <div class="card card-giorno">
-      <div class="card-header>"><h3>{{ getGiornoFromNumero(giorno)}}<button class="btn btn-primary btn-lg float-right" (click)="iscrivi(giorno)">Iscrivi</button></h3> </div>
+      <div class="card-header>"><h5 class="text-center">{{ getGiornoFromNumero(giorno.giorno)}} - {{giorno.data | date:'dd/MM/yyyy' }}<button class="btn btn-primary btn-lg float-right" (click)="iscrivi(giorno.giorno)">Iscrivi</button></h5> </div>
       <div class="card-body">
-      <ul>
-        <li *ngFor="let slot of getSlots(giorno)">
-          Ore {{slot.ora}}, posti disponibili: {{slot.posti}}
+      <ul list-group>
+        <li class="list-group-item" *ngFor="let slot of getSlots(giorno.giorno)">
+          Ore {{slot.ora}}, liberi: {{slot.posti}}
           <ng-template #popContent>
             <div *ngFor="let utente of slot.iscritti">
               {{utente.nome + " " + utente.cognome}}
             </div>
           </ng-template>
           <ng-template #popTitle><b>Iscritti</b></ng-template>
-          <button type="button" class="btn btn-sm btn-outline-secondary"
+          <button type="button" class="btn btn-sm btn-outline-secondary" aria-label="visualizza iscritti"
                   [ngbPopover]="popContent" [popoverTitle]="popTitle" *ngIf="slot.iscritti && slot.iscritti.length > 0">
-            <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-people-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+            <svg aria-hidden="true" width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-people-fill" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
               <path fill-rule="evenodd" d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-5.784 6A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216zM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"/>
             </svg>
           </button>

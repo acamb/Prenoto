@@ -1,6 +1,7 @@
 package ac.sanbernardo.prenoto.services
 
 import ac.sanbernardo.prenoto.aop.Logged
+import ac.sanbernardo.prenoto.exceptions.IscrizioneNelPassatoNonCancellabileException
 import ac.sanbernardo.prenoto.exceptions.MaxNumeroIscrizioniSuperateException
 import ac.sanbernardo.prenoto.exceptions.NumeroOreException
 import ac.sanbernardo.prenoto.exceptions.PostiEsauritiException
@@ -81,6 +82,8 @@ class PrenotazioneService {
                 .findAll{
                     it.slotPrenotazione.giornoSettimana == prenotazioneDb.slotPrenotazione.giornoSettimana
                 }
+                .sort{it.slotPrenotazione.ora}
+
         int idx = prenotazioniCollegate.indexOf(prenotazioneDb)
         if(idx != 0 && idx != prenotazioniCollegate.size()-1){
             throw new RuntimeException("Impossibile cancellare la prenotazione")
@@ -90,7 +93,7 @@ class PrenotazioneService {
             c.setTime(prenotazioneDb.slotPrenotazione.data)
             c.set(Calendar.HOUR_OF_DAY,prenotazioneDb.slotPrenotazione.ora)
             if(c.getTime() < new Date()){
-                throw new RuntimeException("Impossibile cancellare la prenotazione")
+                throw new IscrizioneNelPassatoNonCancellabileException()
             }
         }
         slot.postiRimanenti++
@@ -233,6 +236,10 @@ class PrenotazioneService {
         if(slotPrenotazione.postiRimanenti < 1){
             return false
         }
+        if(slotPrenotazione.getDataOraSlot().before(new Date())){
+            return false
+        }
+
 
         int maxGiorni = configurazioneRepository.findByChiaveAndValidoTrue(Configurazione.ConfigTokens.MAX_PRENOTAZIONI_UTENTE_SETTIMANA.name()).valore.toInteger()
         int maxOre = configurazioneRepository.findByChiaveAndValidoTrue(Configurazione.ConfigTokens.NUMERO_ORE_MAX.name()).valore.toInteger()

@@ -1,12 +1,12 @@
-<h3>Posti riservati d'ufficio</h3>
+<h4>Posti riservati d'ufficio</h4>
 <app-posto-riservato-table [posti]="riservatiUfficio" [users]="utenti" (cancellaPosto)="cancella($event)"></app-posto-riservato-table>
 <br/>
 <br/>
-<h3>Posti riservati preferenze</h3>
+<h4>Posti riservati preferenze</h4>
 <app-posto-riservato-table [posti]="riservatiPrenotazione" [users]="utenti" (cancellaPosto)="cancella($event)"></app-posto-riservato-table>
 <br/>
 <br/>
-<h3>Aggiungi nuovo posto riservato</h3>
+<h4>Aggiungi nuovo posto riservato</h4>
 <form #postoForm="ngForm" (ngSubmit)="onSubmit()">
   <div class="form-group row">
     <div class="col-md-3"><label>Tipo prenotazione</label>

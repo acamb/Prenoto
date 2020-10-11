@@ -32,6 +32,14 @@ class SlotPrenotazione {
     @NotNull
     boolean initialized = false
 
+    Date getDataOraSlot(){
+        Calendar c = GregorianCalendar.getInstance()
+        c.setTime(data)
+        c.set(Calendar.HOUR_OF_DAY,ora)
+        c.clear(Calendar.MINUTE)
+        return c.getTime()
+    }
+
 
     @Override
     public String toString() {

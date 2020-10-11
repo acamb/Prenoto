@@ -7,4 +7,5 @@ export class Slot {
   posti: number
   visibile: boolean
   iscritti: Array<User>
+  dataOraSlot: Date
 }

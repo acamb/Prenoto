@@ -3,6 +3,7 @@
   "PRENOTAZIONE_KO_POSTO" : "Non ci sono piu' posti per lo slot selezionato",
   "PRENOTAZIONE_KO_NUM_PRENOTAZIONI" : "Numero di iscrizioni settimanali raggiunto",
   "PRENOTAZIONE_KO_CONCURRENT" : "Piu' persone si sono iscritte nello slot nello stesso momento, riprova",
+  "ISCRIZIONE_NEL_PASSATO_NON_CANCELLABILE": "Non e' possibile cancellare un iscrizione passata",
   "E_GENERICO" : "Si e' verificato un errore, riprova,",
   "err.new.password" : "La nuova password e la ripetizione non corrispondono",
   "password.mismatch" : "La password attuale non corrisponde"

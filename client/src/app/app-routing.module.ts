@@ -15,6 +15,7 @@ import {UsersResolver} from "./resolvers/UsersResolver";
 import {ParametriResolver} from "./resolvers/ParametriResolver";
 import {CambioPasswordComponent} from "./components/cambio-password/cambio-password.component";
 import {PasswordTemporaneaGuard} from "./guards/password-temporanea.guard";
+import {RiepilogoIscrizioniComponent} from "./components/riepilogo-iscrizioni/riepilogo-iscrizioni.component";
 
 
 const routes: Routes = [
@@ -66,6 +67,14 @@ const routes: Routes = [
         path: 'admin',
         component: AdminComponent,
         canActivate: [PasswordTemporaneaGuard]
+      },
+      {
+        path: 'riepilogo',
+        component: RiepilogoIscrizioniComponent,
+        canActivate: [PasswordTemporaneaGuard],
+        resolve: {
+          settimana: SettimanaResolver
+        },
       },
       {
         path: '',

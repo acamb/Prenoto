@@ -7,6 +7,7 @@ import {PrenotazioniService} from "../../services/prenotazioni.service";
 import {map} from "rxjs/operators";
 import {Observable} from "rxjs";
 import {NgbPopover} from "@ng-bootstrap/ng-bootstrap";
+import {Giorno} from "../../model/Giorno";
 
 @Component({
   selector: 'app-settimana',
@@ -23,10 +24,9 @@ export class SettimanaComponent implements OnInit {
   constructor(private router: Router,private prenotazioniService : PrenotazioniService) {
   }
 
-  get giorni() : Array<number> {
+  get giorni() : Array<Giorno> {
     return this.settimana.giorni.filter(
-          g => g.slots.filter(s => s.visibile).length > 0) //solo quelli con slot ancora liberi
-      .map(g => g.giorno)
+          g => g.slots.filter(s => s.visibile).length > 0); //solo quelli con slot ancora liberi
   }
 
   getSlots(giorno: number) : Array<Slot> {
