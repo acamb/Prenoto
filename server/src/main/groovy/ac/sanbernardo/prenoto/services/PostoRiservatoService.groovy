@@ -21,7 +21,6 @@ class PostoRiservatoService {
      * @param tipo
      * @return La lista dei posti riservati attivi per il tipo passato
      */
-    @Logged
     List<PostoRiservato> getPostiPerTipo(TipoIscrizione tipo){
         postoRiservatoRepository.findByTipoIscrizioneAndValidoTrue(tipo)
     }

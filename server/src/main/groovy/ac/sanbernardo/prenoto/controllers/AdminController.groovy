@@ -47,7 +47,6 @@ class AdminController {
     }
 
     @Get("/parametri")
-    @Logged
     List<Configurazione> getParametri(){
         configurazioneRepository.findAllByValidoTrue()
     }

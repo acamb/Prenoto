@@ -19,6 +19,7 @@ import io.micronaut.security.rules.SecurityRule
 
 import javax.annotation.security.RolesAllowed
 import javax.inject.Inject
+import java.security.Principal
 
 @Controller("/api/postoRiservato")
 @Secured(SecurityRule.IS_AUTHENTICATED)
@@ -30,7 +31,6 @@ class PostoRiservatoController {
     UserRepository userRepository
 
     @Get("/{tipo}")
-    @Logged
     @RolesAllowed(["OPERATOR","ADMIN"])
     def getPostiRiservati(TipoIscrizione tipo){
         postoRiservatoService.getPostiPerTipo(tipo).collect{
@@ -49,14 +49,16 @@ class PostoRiservatoController {
 
     @Post("/")
     @RolesAllowed(["OPERATOR","ADMIN"])
-    def save(@Body PostoRiservato postoRiservato){
+    @Logged
+    def save(@Body PostoRiservato postoRiservato,Principal principal){
         postoRiservatoService.salvaPostoRiservato(postoRiservato)
         HttpResponse.ok()
     }
 
     @Delete("/")
     @RolesAllowed(["OPERATOR","ADMIN"])
-    def delete(@QueryValue Long id){
+    @Logged
+    def delete(@QueryValue Long id, Principal principal){
         postoRiservatoService.eliminaPostoRiservato(id)
         HttpResponse.ok()
     }

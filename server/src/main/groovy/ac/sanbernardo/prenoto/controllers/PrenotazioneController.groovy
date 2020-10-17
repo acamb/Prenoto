@@ -36,11 +36,10 @@ class PrenotazioneController {
     UserService userService
 
     @Get("/slotAttivi")
-    @Logged
     @RolesAllowed(["USER","OPERATOR","ADMIN"])
     def getSlotsAttivi(){
         [ giorni:
-            prenotazioneService.getSlotsAttuali().groupBy {it.giornoSettimana}.collect { giorno ->
+            prenotazioneService.getSlotsAttuali()?.groupBy {it.giornoSettimana}.collect { giorno ->
                 [
                         giorno: giorno.key,
                         data: giorno.value?.get(0)?.data,
@@ -123,7 +122,6 @@ class PrenotazioneController {
     }
 
     @Get("/")
-    @Logged
     @RolesAllowed(["USER","OPERATOR","ADMIN"])
     def prenotazioniUtente(Principal principal){
 
@@ -141,7 +139,6 @@ class PrenotazioneController {
     }
 
     @Get("/iscrittiPerSlot")
-    @Logged
     def getIscrittiPerSlot(@QueryValue Long slotId){
         prenotazioneService.getUtentiIscritti(slotId)
             .collect{

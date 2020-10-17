@@ -105,7 +105,6 @@ class PrenotazioneService {
      *
      * @return gli slot attualmente attivi su cui e' possibile prenotarsi (attivi ed inizializzati) se ci sono posti liberi
      */
-    @Logged
     List<SlotPrenotazione> getSlotsAttuali(){
         slotPrenotazioneRepository.findByActiveTrueAndInitializedTrue()
     }
@@ -197,7 +196,6 @@ class PrenotazioneService {
      * @param user
      * @return La lista di prenotazioni attive per l'utente
      */
-    @Logged
     List<Prenotazione> getPrenotazioniPerArciere(Long userId){
         try {
             prenotazioneRepository.prenotazioniAttive(userId)
@@ -234,9 +232,11 @@ class PrenotazioneService {
             return true
         }
         if(slotPrenotazione.postiRimanenti < 1){
+            log.info("prenotazione scartata per posti insufficienti")
             return false
         }
         if(slotPrenotazione.getDataOraSlot().before(new Date())){
+            log.info("prenotazione scartata perche' nel passato")
             return false
         }
 
@@ -249,6 +249,7 @@ class PrenotazioneService {
         //Se ci sono altre prenotazioni lo stesso giorno devo controllare che siano adiacenti e max ore
         if(adiacenti){
             if(adiacenti.size() >= maxOre){
+                log.info("prenotazione scartata per posti adiacenti >= maxOre")
                 return false
             }
             List<Integer> ore = adiacenti.collect{it.slotPrenotazione.ora}
@@ -257,6 +258,7 @@ class PrenotazioneService {
             //controllo che siano consecutive
             for(int i = 0;i<ore.size()-1;i++){
                 if(!(ore[i]+1).equals(ore[i+1])){
+                    log.info("prenotazione scartata per posti non adiacenti")
                     return false
                 }
             }
@@ -265,6 +267,7 @@ class PrenotazioneService {
         else {
             int giorniPrenotati = getPrenotazioniPerArciere(userId).groupBy { it.slotPrenotazione.giornoSettimana }.keySet().size()
             if (giorniPrenotati >= maxGiorni) {
+                log.info("prenotazione scartata per giorni max superati")
                 return false
             }
         }
@@ -281,7 +284,6 @@ class PrenotazioneService {
         impostaSlotInizializzati()
     }
 
-    @Logged
     List<User> getUtentiIscritti(Long slotId){
         slotPrenotazioneRepository.getUtentiIscritti(slotId)
     }

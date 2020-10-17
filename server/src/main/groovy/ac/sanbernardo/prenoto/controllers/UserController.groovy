@@ -1,5 +1,6 @@
 package ac.sanbernardo.prenoto.controllers
 
+import ac.sanbernardo.prenoto.aop.Logged
 import ac.sanbernardo.prenoto.controllers.payloads.CambioPasswordRequest
 import ac.sanbernardo.prenoto.model.User
 import ac.sanbernardo.prenoto.services.UserService
@@ -38,6 +39,7 @@ class UserController {
     }
 
     @Get("/")
+    @Logged
     def getUser(@Nullable Principal principal){
         User user = userService.getUser(principal.getName())
         [
@@ -51,6 +53,7 @@ class UserController {
         ]
     }
     @Post('/cambiaPassword')
+    @Logged
     def cambiaPassword(@Body CambioPasswordRequest request,@Nullable Principal principal){
         User user = userService.getUser(principal.getName())
         try {

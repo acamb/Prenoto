@@ -52,7 +52,6 @@ class User implements UppercaseTrait {
                 "id=" + id +
                 ", nome='" + nome + '\'' +
                 ", cognome='" + cognome + '\'' +
-                ", password='" + password + '\'' +
                 ", active=" + active +
                 ", cambioPassword=" + cambioPassword +
                 '}';
