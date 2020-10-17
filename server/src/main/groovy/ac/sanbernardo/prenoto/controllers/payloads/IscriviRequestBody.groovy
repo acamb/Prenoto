@@ -8,4 +8,14 @@ class IscriviRequestBody {
     User user
     SlotPrenotazione slot
     int ore
+
+
+    @Override
+    public String toString() {
+        return "IscriviRequestBody{" +
+                "user=" + user +
+                ", slot=" + slot +
+                ", ore=" + ore +
+                '}';
+    }
 }
