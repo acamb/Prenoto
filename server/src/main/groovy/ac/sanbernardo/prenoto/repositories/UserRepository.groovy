@@ -11,5 +11,7 @@ interface UserRepository extends CrudRepository<User,Long>{
 
     User findByUsername(String username)
 
+    User findByUsernameAndActiveTrue(String username)
+
     List<User> findAllByActiveTrue()
 }

@@ -23,7 +23,7 @@ class UserService {
     }
 
     User login(String username,String password){
-        User user =  userRepository.findByUsername(username)
+        User user =  userRepository.findByUsernameAndActiveTrue(username)
         if(encoder.matches(password,user.password)){
             return user
         }

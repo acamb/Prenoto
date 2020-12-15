@@ -63,7 +63,7 @@ class TestDataLoader {
                 password: encoder.encode("aaa"),
                 nome: "test3",
                 cognome: "test3",
-                active: true,
+                active: false,
                 cambioPassword: true,
                 role: User.Roles.OPERATOR.name()
         ))
