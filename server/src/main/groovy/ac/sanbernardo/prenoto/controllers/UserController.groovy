@@ -1,7 +1,9 @@
 package ac.sanbernardo.prenoto.controllers
 
 import ac.sanbernardo.prenoto.aop.Logged
+import ac.sanbernardo.prenoto.controllers.payloads.AggiornaUtenteRequest
 import ac.sanbernardo.prenoto.controllers.payloads.CambioPasswordRequest
+import ac.sanbernardo.prenoto.controllers.payloads.ResetPasswordRequest
 import ac.sanbernardo.prenoto.model.User
 import ac.sanbernardo.prenoto.services.UserService
 import io.micronaut.http.annotation.Body
@@ -12,6 +14,7 @@ import io.micronaut.security.annotation.Secured
 import io.micronaut.security.rules.SecurityRule
 
 import javax.annotation.Nullable
+import javax.annotation.security.RolesAllowed
 import javax.inject.Inject
 import java.security.Principal
 
@@ -66,6 +69,42 @@ class UserController {
             [
                     success: false,
                     message: 'password.mismatch'
+            ]
+        }
+    }
+
+    @Post('/aggiorna')
+    @Logged
+    @RolesAllowed(["OPERATOR","ADMIN"])
+    def aggiorna(@Body AggiornaUtenteRequest request, @Nullable Principal principal){
+        try {
+            userService.aggiornaUtente(request)
+            [
+                    success: true
+            ]
+        }
+        catch(all){
+            [
+                    success: false,
+                    message: 'generic.error'
+            ]
+        }
+    }
+
+    @Post('/resetPassword')
+    @Logged
+    @RolesAllowed(["OPERATOR","ADMIN"])
+    def aggiorna(@Body ResetPasswordRequest request, @Nullable Principal principal){
+        try {
+            userService.resetPassword(request)
+            [
+                    success: true
+            ]
+        }
+        catch(all){
+            [
+                    success: false,
+                    message: 'generic.error'
             ]
         }
     }

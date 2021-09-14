@@ -35,6 +35,9 @@ class User implements UppercaseTrait {
     String username
     String role = Roles.USER.name()
 
+    Date dataFineValiditaGreenPass
+    Date dataFineVisitaAgonistica
+
     @PrePersist
     void prePersist(){
         setUppercaseFields()

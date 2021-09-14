@@ -33,12 +33,20 @@ class TestDataLoader {
     @EventListener
     @Logged
     void loadData(final ServiceReadyEvent event){
+        Date today = new Date()
+        Calendar c = GregorianCalendar.getInstance()
+        c.add(Calendar.DAY_OF_MONTH,-1)
+        Date yesterday = c.getTime()
+        c.add(Calendar.DAY_OF_MONTH,2)
+        Date tomorrow = c.getTime()
         userRepository.save(new User(
                 username: "test",
                 password: encoder.encode("aaa"),
                 nome: "test",
                 cognome: "test",
                 active: true,
+                dataFineValiditaGreenPass: tomorrow,
+                dataFineVisitaAgonistica: tomorrow,
                 cambioPassword: true
         ))
         userRepository.save(new User(
@@ -47,6 +55,8 @@ class TestDataLoader {
                 nome: "test1",
                 cognome: "test1",
                 active: true,
+                dataFineValiditaGreenPass: yesterday,
+                dataFineVisitaAgonistica: tomorrow,
                 cambioPassword: true
         ))
         userRepository.save(new User(
@@ -56,6 +66,8 @@ class TestDataLoader {
                 cognome: "test2",
                 active: true,
                 cambioPassword: true,
+                dataFineValiditaGreenPass: tomorrow,
+                dataFineVisitaAgonistica: today,
                 role: User.Roles.USER.name()
         ))
         userRepository.save(new User(
@@ -65,6 +77,8 @@ class TestDataLoader {
                 cognome: "test3",
                 active: false,
                 cambioPassword: true,
+                dataFineValiditaGreenPass: null ,
+                dataFineVisitaAgonistica: tomorrow,
                 role: User.Roles.OPERATOR.name()
         ))
         userRepository.save(new User(
@@ -74,6 +88,8 @@ class TestDataLoader {
                 cognome: "test4",
                 active: true,
                 cambioPassword: true,
+                dataFineValiditaGreenPass: null,
+                dataFineVisitaAgonistica: null,
                 role: User.Roles.ADMIN.name()
         ))
         configurazioneRepository.save(new Configurazione(

@@ -12,7 +12,7 @@ import ac.sanbernardo.prenoto.repositories.PostoRiservatoRepository
 import ac.sanbernardo.prenoto.repositories.PrenotazioneRepository
 import ac.sanbernardo.prenoto.repositories.UserRepository
 import ac.sanbernardo.prenoto.services.PrenotazioneService
-import io.micronaut.test.annotation.MicronautTest
+import io.micronaut.test.extensions.spock.annotation.MicronautTest
 import org.slf4j.LoggerFactory
 import spock.lang.Specification
 import spock.lang.Unroll
