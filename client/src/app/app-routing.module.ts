@@ -16,6 +16,9 @@ import {ParametriResolver} from "./resolvers/ParametriResolver";
 import {CambioPasswordComponent} from "./components/cambio-password/cambio-password.component";
 import {PasswordTemporaneaGuard} from "./guards/password-temporanea.guard";
 import {RiepilogoIscrizioniComponent} from "./components/riepilogo-iscrizioni/riepilogo-iscrizioni.component";
+import { GestioneUtentiComponent } from './components/gestione-utenti/gestione-utenti.component';
+import { SchedaUtenteComponent } from './components/scheda-utente/scheda-utente.component';
+import { UserResolver } from './resolvers/UserResolver';
 
 
 const routes: Routes = [
@@ -75,6 +78,19 @@ const routes: Routes = [
         resolve: {
           settimana: SettimanaResolver
         },
+      },
+      {
+        path: 'utenti',
+        component: GestioneUtentiComponent,
+        canActivate: [PasswordTemporaneaGuard]
+      },
+      {
+        path: 'utente/:id',
+        component: SchedaUtenteComponent,
+        canActivate: [PasswordTemporaneaGuard],
+        resolve: {
+          user: UserResolver 
+        }
       },
       {
         path: '',

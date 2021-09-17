@@ -19,7 +19,7 @@ class SlotPrenotazione {
     @GeneratedValue(strategy = GenerationType.AUTO)
     Long id
     @Version
-    int version
+    Integer version
     @NotNull
     int giornoSettimana
     @NotNull

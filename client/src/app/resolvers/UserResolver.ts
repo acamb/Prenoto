@@ -3,18 +3,19 @@ import {IscrizioneUtente} from "../model/IscrizioneUtente";
 import {Observable} from "rxjs";
 import {AuthenticationService} from "../services/authentication.service";
 import {PrenotazioniService} from "../services/prenotazioni.service";
-import {Settimana} from "../model/Settimana";
 import {Injectable} from "@angular/core";
 import {AppStateService} from "../services/app-state.service";
+import { UserService } from "../services/user.service";
 import { User } from "../model/User";
-@Injectable()
-export class UsersResolver implements Resolve<User[]> { 
 
-  constructor(private authService: AuthenticationService,private appState: AppStateService) {
+@Injectable()
+export class UserResolver implements Resolve<User> {
+
+  constructor(private userService: UserService) {
   }
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> | Promise<any> | any {
-      return this.appState.loadUtenti()
+  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<User> | Promise<User> | User {
+      return this.userService.loadUser(route.params.id).toPromise() 
   }
 
 }

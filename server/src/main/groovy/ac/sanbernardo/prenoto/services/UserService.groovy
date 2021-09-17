@@ -45,7 +45,7 @@ class UserService {
     }
 
     List<User> getAllUsers(){
-        return userRepository.findAllByActiveTrue();
+        return userRepository.findAllOrderByUsername();
     }
 
     void aggiornaUtente(AggiornaUtenteRequest aggiornaUtenteRequest) {
@@ -60,7 +60,7 @@ class UserService {
 
     void resetPassword(ResetPasswordRequest resetPasswordRequest) {
         User userDb = userRepository.findById(resetPasswordRequest.id).get()
-        userDb.password = encoder.encode(resetPasswordRequest.newPassword)
+        userDb.password = encoder.encode(userDb.username.toLowerCase())
         userDb.cambioPassword = true
         userDb.active = true
         userRepository.save(userDb)

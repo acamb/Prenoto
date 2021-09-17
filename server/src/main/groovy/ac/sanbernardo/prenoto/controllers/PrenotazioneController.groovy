@@ -1,5 +1,6 @@
 package ac.sanbernardo.prenoto.controllers
 
+import ac.sanbernardo.prenoto.Utils
 import ac.sanbernardo.prenoto.aop.Logged
 import ac.sanbernardo.prenoto.controllers.payloads.IscriviRequestBody
 import ac.sanbernardo.prenoto.exceptions.IscrizioneNelPassatoNonCancellabileException
@@ -21,6 +22,8 @@ import io.micronaut.http.annotation.Post
 import io.micronaut.http.annotation.QueryValue
 import io.micronaut.security.annotation.Secured
 import io.micronaut.security.rules.SecurityRule
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 import javax.annotation.security.RolesAllowed
 import javax.inject.Inject
@@ -34,6 +37,8 @@ class PrenotazioneController {
     PrenotazioneService prenotazioneService
     @Inject
     UserService userService
+
+    Logger logger = LoggerFactory.getLogger(PrenotazioneController.class)
 
     @Get("/slotAttivi")
     @RolesAllowed(["USER","OPERATOR","ADMIN"])
@@ -88,6 +93,7 @@ class PrenotazioneController {
             message = "PRENOTAZIONE_KO_CONCURRENT"
         }
         catch(all){
+            logger.error(Utils.exceptionToString(all))
             result = false
             message = "E_GENERICO"
         }
@@ -113,6 +119,7 @@ class PrenotazioneController {
                     message: 'ISCRIZIONE_NEL_PASSATO_NON_CANCELLABILE'
             ]
         }catch(all){
+            logger.error(Utils.exceptionToString(all))
             [
                     success: false,
                     message: "E_GENERICO"

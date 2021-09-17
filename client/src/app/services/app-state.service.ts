@@ -49,6 +49,10 @@ export class AppStateService {
     this.utenti = await this.userService.geAllUsers().toPromise();
   }
 
+  async loadUtentiNoCache(){
+    this.utenti = await this.userService.geAllUsers().toPromise();
+  }
+
   async loadParametri(){
     if(this.parametri && this.parametri.length > 0){
       return;

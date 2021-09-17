@@ -16,4 +16,6 @@ interface UserRepository extends CrudRepository<User,Long>{
     Optional<User> findByUsernameAndActiveTrue(String username)
 
     List<User> findAllByActiveTrue()
+
+    List<User> findAllOrderByUsername()
 }

@@ -51,6 +51,7 @@ class PrenotazioneServiceTests extends Specification {
     }
 
     void creaSettimana(){
+        prenotazioneService.annullaSlotCorrenti()
         prenotazioneService.creaSlotNuovaSettimana()
         prenotazioneService.impostaSlotInizializzati()
     }
@@ -59,7 +60,8 @@ class PrenotazioneServiceTests extends Specification {
         userRepository.save(new User(
                 nome: "user_${suffix}",
                 cognome: "cognome_${suffix}",
-                password: "notSoSecure"
+                password: "notSoSecure",
+                username: "username_${suffix}"
         ))
     }
 
@@ -85,9 +87,10 @@ class PrenotazioneServiceTests extends Specification {
         when:
             initConfig()
             creaSettimana()
+        SlotPrenotazione  slot= prenotazioneService.getSlotsAttuali().find{ it.ora == 10 && it.giornoSettimana ==6}
             (1..3).each {
                 prenotazioneService.prenota(creaUtente(it.toString()),
-                    new SlotPrenotazione(ora: 10,giornoSettimana: 1),1
+                    slot,1
                 )
             }
         then:
@@ -99,9 +102,10 @@ class PrenotazioneServiceTests extends Specification {
         when:
         initConfig()
         creaSettimana()
+        SlotPrenotazione slot= prenotazioneService.getSlotsAttuali().find{ it.ora == 10 && it.giornoSettimana ==6}
         (1..4).each {
             prenotazioneService.prenota(creaUtente(it.toString()),
-                    new SlotPrenotazione(ora: 10,giornoSettimana: 1),1
+                    slot,1
             )
         }
         then:
@@ -148,7 +152,7 @@ class PrenotazioneServiceTests extends Specification {
         (1..nPostiRiservati).each{
             User user = creaUtente("U_${it}")
             PostoRiservato r = postoRiservatoRepository.save(new PostoRiservato(
-                    giorno: 1,
+                    giorno: 6,
                     ora: 10,
                     numeroOre: nOreRiservati,
                     userId: user.id,
@@ -159,7 +163,7 @@ class PrenotazioneServiceTests extends Specification {
         (1..nPostiPreferenza).each{
             User user = creaUtente("P_${it}")
             PostoRiservato r = postoRiservatoRepository.save(new PostoRiservato(
-                    giorno: 1,
+                    giorno: 6,
                     ora: 10,
                     numeroOre: nOrePreferenza,
                     userId: user.id,
@@ -182,15 +186,30 @@ class PrenotazioneServiceTests extends Specification {
     void "prenotazione con numero massimo settimanale superato"(){
         given:
             initConfig(3)
-            prenotazioneService.creaSlotNuovaSettimana()
+            creaSettimana()
             User user = creaUtente("U")
-            prenotazioneService.prenota(user,new SlotPrenotazione(giornoSettimana: 1,ora: 10),1)
-            prenotazioneService.prenota(user,new SlotPrenotazione(giornoSettimana: 2,ora: 10),1)
-            prenotazioneService.prenota(user,new SlotPrenotazione(giornoSettimana: 3,ora: 10),1)
+            SlotPrenotazione []slot = prenotazioneService.getSlotsAttuali().findAll{it.giornoSettimana==6}.sort{it.ora}
+            prenotazioneService.prenota(user,slot[0],1)
+            prenotazioneService.prenota(user,slot[1],1)
+            prenotazioneService.prenota(user,slot[2],1)
         when:
-            prenotazioneService.prenota(user,new SlotPrenotazione(giornoSettimana: 4,ora: 10),1)
+            prenotazioneService.prenota(user,slot[3],1)
         then:
             thrown(MaxNumeroIscrizioniSuperateException.class)
+    }
+
+    @Unroll
+    void "prenotazione con slot non adiacenti"(){
+        given:
+        initConfig(3)
+        creaSettimana()
+        User user = creaUtente("U")
+        SlotPrenotazione []slot = prenotazioneService.getSlotsAttuali().findAll{it.giornoSettimana==6}.sort{it.ora}
+        prenotazioneService.prenota(user,slot[0],1)
+        when:
+        prenotazioneService.prenota(user,slot[2],1)
+        then:
+        thrown(MaxNumeroIscrizioniSuperateException.class)
     }
 
 

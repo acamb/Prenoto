@@ -7,4 +7,6 @@ export interface User {
   active: boolean;
   role: string;
   cambioPassword: boolean;
+  dataFineValiditaGreenPass: Date;
+  dataFineVisitaAgonistica: Date;
 }
