@@ -39,9 +39,7 @@ export class GestioneUtentiComponent implements OnInit {
   }
 
   async onPasswordReset(id: number){
-      //TODO conferma
-      await this.userService.passwordReset(id).toPromise()
-      await this.appState.loadUtentiNoCache();
+      this.router.navigateByUrl(`resetPassword/${id}`)
   }
 
   get users() {

@@ -33,6 +33,7 @@ import { GestioneUtentiComponent } from './components/gestione-utenti/gestione-u
 import { SchedaUtenteComponent } from './components/scheda-utente/scheda-utente.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { UserResolver } from './resolvers/UserResolver';
+import { ResetPasswordConfirmComponent } from './components/reset-password-confirm/reset-password-confirm.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -57,7 +58,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     CambioPasswordComponent,
     RiepilogoIscrizioniComponent,
     GestioneUtentiComponent,
-    SchedaUtenteComponent
+    SchedaUtenteComponent,
+    ResetPasswordConfirmComponent
   ],
   imports: [
     BrowserModule,

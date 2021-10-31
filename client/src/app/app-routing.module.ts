@@ -19,6 +19,7 @@ import {RiepilogoIscrizioniComponent} from "./components/riepilogo-iscrizioni/ri
 import { GestioneUtentiComponent } from './components/gestione-utenti/gestione-utenti.component';
 import { SchedaUtenteComponent } from './components/scheda-utente/scheda-utente.component';
 import { UserResolver } from './resolvers/UserResolver';
+import { ResetPasswordConfirmComponent } from './components/reset-password-confirm/reset-password-confirm.component';
 
 
 const routes: Routes = [
@@ -87,6 +88,14 @@ const routes: Routes = [
       {
         path: 'utente/:id',
         component: SchedaUtenteComponent,
+        canActivate: [PasswordTemporaneaGuard],
+        resolve: {
+          user: UserResolver 
+        }
+      },
+      {
+        path: 'resetPassword/:id',
+        component: ResetPasswordConfirmComponent,
         canActivate: [PasswordTemporaneaGuard],
         resolve: {
           user: UserResolver 
