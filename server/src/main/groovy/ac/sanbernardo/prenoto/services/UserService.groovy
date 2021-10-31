@@ -2,6 +2,8 @@ package ac.sanbernardo.prenoto.services
 
 import ac.sanbernardo.prenoto.auth.BcryptPasswordEncoderService
 import ac.sanbernardo.prenoto.auth.PasswordEncoder
+import ac.sanbernardo.prenoto.controllers.payloads.AggiornaUtenteRequest
+import ac.sanbernardo.prenoto.controllers.payloads.ResetPasswordRequest
 import ac.sanbernardo.prenoto.model.User
 import ac.sanbernardo.prenoto.repositories.UserRepository
 
@@ -23,7 +25,7 @@ class UserService {
     }
 
     User login(String username,String password){
-        User user =  userRepository.findByUsername(username)
+        User user =  userRepository.findByUsernameAndActiveTrue(username).orElse(null)
         if(encoder.matches(password,user.password)){
             return user
         }
@@ -43,6 +45,24 @@ class UserService {
     }
 
     List<User> getAllUsers(){
-        return userRepository.findAllByActiveTrue();
+        return userRepository.findAllOrderByUsername();
+    }
+
+    void aggiornaUtente(AggiornaUtenteRequest aggiornaUtenteRequest) {
+        User userDb = userRepository.findById(aggiornaUtenteRequest.id).get()
+        userDb.nome = aggiornaUtenteRequest.nome
+        userDb.cognome = aggiornaUtenteRequest.cognome
+        userDb.active = aggiornaUtenteRequest.active
+        userDb.dataFineValiditaGreenPass = aggiornaUtenteRequest.dataFineValiditaGreenPass
+        userDb.dataFineVisitaAgonistica = aggiornaUtenteRequest.dataFineVisitaAgonistica
+        userRepository.save(userDb)
+    }
+
+    void resetPassword(ResetPasswordRequest resetPasswordRequest) {
+        User userDb = userRepository.findById(resetPasswordRequest.id).get()
+        userDb.password = encoder.encode(userDb.username.toLowerCase())
+        userDb.cambioPassword = true
+        userDb.active = true
+        userRepository.save(userDb)
     }
 }

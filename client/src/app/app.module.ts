@@ -29,6 +29,11 @@ import {UsersResolver} from "./resolvers/UsersResolver";
 import {ParametriResolver} from "./resolvers/ParametriResolver";
 import { CambioPasswordComponent } from './components/cambio-password/cambio-password.component';
 import { RiepilogoIscrizioniComponent } from './components/riepilogo-iscrizioni/riepilogo-iscrizioni.component';
+import { GestioneUtentiComponent } from './components/gestione-utenti/gestione-utenti.component';
+import { SchedaUtenteComponent } from './components/scheda-utente/scheda-utente.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { UserResolver } from './resolvers/UserResolver';
+import { ResetPasswordConfirmComponent } from './components/reset-password-confirm/reset-password-confirm.component';
 
 // AoT requires an exported function for factories
 export function HttpLoaderFactory(http: HttpClient) {
@@ -51,7 +56,10 @@ export function HttpLoaderFactory(http: HttpClient) {
     AdminComponent,
     PostoRiservatoTableComponent,
     CambioPasswordComponent,
-    RiepilogoIscrizioniComponent
+    RiepilogoIscrizioniComponent,
+    GestioneUtentiComponent,
+    SchedaUtenteComponent,
+    ResetPasswordConfirmComponent
   ],
   imports: [
     BrowserModule,
@@ -66,7 +74,8 @@ export function HttpLoaderFactory(http: HttpClient) {
         deps: [HttpClient]
       },
       defaultLanguage: 'it'
-    })
+    }),
+    FontAwesomeModule
   ],
   providers: [{
     provide: HTTP_INTERCEPTORS,
@@ -79,7 +88,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     SettimanaResolver,
     PostiResolver,
     UsersResolver,
-    ParametriResolver
+    ParametriResolver,
+    UserResolver
   ],
   bootstrap: [AppComponent]
 })

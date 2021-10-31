@@ -1,0 +1,43 @@
+<h2>Utenti</h2>
+<div *ngIf="users">
+    <input [(ngModel)]="filter"/> 
+    <table class="table table-striped">
+      <thead>
+      <tr>
+          <th></th>
+          <th></th>
+          <th>Username</th>
+          <th>Attivo</th>
+          <th>Pwd Temp.</th>
+          <th>GreenPass</th>
+          <th>Visita</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let user of users">
+        <td><fa-icon [icon]="faEdit" (click)="onRowClick(user.id)"></fa-icon></td>
+        <td><fa-icon [icon]="faKey" (click)="onPasswordReset(user.id)"></fa-icon></td>
+        <td>{{ user.username }}</td>
+        <td>
+            <fa-icon [icon]="faCheck" *ngIf="user.active"></fa-icon>
+            <fa-icon [icon]="faX" *ngIf="!user.active"></fa-icon>
+        </td>
+        <td>
+            <fa-icon [icon]="faCheck" *ngIf="user.cambioPassword"></fa-icon>
+            <span *ngIf="!user.cambioPassword">&nbsp;</span>
+        </td>
+        <td>{{ user.dataFineValiditaGreenPass | date:'dd/MM/yyyy' }}</td>
+        <td>{{ user.dataFineVisitaAgonistica | date:'dd/MM/yyyy' }}</td>
+      </tr>
+      </tbody>
+    </table>
+    
+    <div class="d-flex justify-content-between p-2">
+      <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize">
+      </ngb-pagination>
+    </div>
+    </div>
+    <div *ngIf="!users">
+      <i>Loading ...</i>
+    </div>
+    

@@ -4,6 +4,7 @@ import ac.sanbernardo.prenoto.model.User
 import ac.sanbernardo.prenoto.repositories.UserRepository
 import ac.sanbernardo.prenoto.services.UserService
 import io.micronaut.context.env.Environment
+import io.micronaut.core.annotation.Nullable
 import io.micronaut.http.HttpRequest
 import io.micronaut.security.authentication.AuthenticationException
 import io.micronaut.security.authentication.AuthenticationFailed
@@ -15,7 +16,6 @@ import io.reactivex.BackpressureStrategy
 import io.reactivex.Flowable
 import org.reactivestreams.Publisher
 
-import javax.annotation.Nullable
 import javax.inject.Inject
 import javax.inject.Singleton
 

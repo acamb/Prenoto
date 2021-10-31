@@ -1,0 +1,60 @@
+<h2 *ngIf="user">Utente {{ user.username }}</h2>
+
+<form #iscrizioneForm="ngForm" (ngSubmit)="onSubmit()" *ngIf="user">
+  <div class="form-group row">
+    <div class="col-md-3"><label>Nome</label>
+    </div>
+    <div class="col-md-3">
+      <input class="form-control" required [(ngModel)]="user.nome"
+             name="nome"/>
+    </div>
+  </div>
+  <div class="form-group row">
+    <div class="col-md-3"><label>Cognome</label>
+    </div>
+    <div class="col-md-3">
+      <input class="form-control" required [(ngModel)]="user.cognome"
+             name="cognome"/>
+    </div>
+  </div>
+  <div class="form-group row">
+    <div class="col-md-3"><label>Username</label>
+    </div>
+    <div class="col-md-3">
+      <input class="form-control" [value]="user.username"
+             name="username" readonly/>
+    </div>
+  </div>
+  <div class="row form-group">
+    <div class="col-md-3" ><label >Attivo</label>
+    </div>
+    <div class="col-md-3 form-check">
+      <input type="checkbox" class="position-static " [(ngModel)]="user.active"
+             name="active"/>
+    </div>
+  </div>
+  <div class="form-group row">
+    <div class="col-md-3"><label>Data fine GreenPass</label>
+    </div>
+    <div class="col-md-3">
+      <input type="date" class="form-control" [value]="user.dataFineValiditaGreenPass | date:'yyyy-MM-dd'" (input)="user.dataFineValiditaGreenPass  = $event.target.valueAsDate"
+             name="active" required/>
+    </div>
+  </div>
+  <div class="form-group row">
+    <div class="col-md-3"><label>Data fine visita medica</label>
+    </div>
+    <div class="col-md-3">
+      <input type="date" class="form-control" [value]="user.dataFineVisitaAgonistica | date:'yyyy-MM-dd'" (input)="user.dataFineVisitaAgonistica  = $event.target.valueAsDate"
+             name="active" required/>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-3"></div>
+    <div class="col-md-4">
+      <button type="submit" [disabled]="!iscrizioneForm.form.valid" class="btn btn-success">Salva</button>
+      
+    </div>
+  </div>
+</form>
+<app-back-button></app-back-button>
