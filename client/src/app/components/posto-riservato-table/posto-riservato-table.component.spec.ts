@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
 import { PostoRiservatoTableComponent } from './posto-riservato-table.component';
 
@@ -6,7 +6,7 @@ describe('PostoRiservatoTableComponent', () => {
   let component: PostoRiservatoTableComponent;
   let fixture: ComponentFixture<PostoRiservatoTableComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ PostoRiservatoTableComponent ]
     })
