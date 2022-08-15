@@ -3,6 +3,7 @@ package ac.sanbernardo.prenoto.auth
 import ac.sanbernardo.prenoto.model.User
 import ac.sanbernardo.prenoto.repositories.UserRepository
 import ac.sanbernardo.prenoto.services.UserService
+import ac.sanbernardo.prenoto.validators.ValidationException
 import io.micronaut.context.env.Environment
 import io.micronaut.core.annotation.Nullable
 import io.micronaut.http.HttpRequest
@@ -14,6 +15,8 @@ import io.micronaut.security.authentication.AuthenticationResponse
 import jakarta.inject.Inject
 import org.reactivestreams.Publisher
 import jakarta.inject.Singleton
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import reactor.core.publisher.Flux
 import reactor.core.publisher.FluxSink
 
@@ -27,6 +30,8 @@ class UserAuthenticationProvider implements  AuthenticationProvider{
     @Inject
     Environment environment
 
+    final static Logger log = LoggerFactory.getLogger(UserAuthenticationProvider.class)
+
     @Override
     public Publisher<AuthenticationResponse> authenticate(@Nullable HttpRequest<?> httpRequest, AuthenticationRequest<?, ?> authenticationRequest) {
         return Flux.create(emitter -> {
@@ -37,6 +42,9 @@ class UserAuthenticationProvider implements  AuthenticationProvider{
                 emitter.complete();
             }
             catch (all) {
+                if(all instanceof ValidationException){
+                    log.info("ValidationException [${all.getMessage()}] for [${authenticationRequest.getIdentity()}]")
+                }
                 emitter.error(AuthenticationResponse.exception());
             }
 

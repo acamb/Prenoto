@@ -75,12 +75,14 @@ class UserService {
     }
 
     User inserisciUtente(User user) {
+        user.active = true
+        user.password = encoder.encode(user.password)
         return userRepository.save(user)
     }
 
     List<Validator<User>> getValidators(){
         List<Validator<User>> validators = []
-        if(configurazioneRepository.findByChiaveAndValidoTrue(Configurazione.ConfigTokens.CHECK_GREENPASS.name()).orElse(new Configurazione(valore: "1"))?.valore){
+        if(configurazioneRepository.findByChiaveAndValidoTrue(Configurazione.ConfigTokens.CHECK_GREENPASS.name()).orElse(new Configurazione(valore: "1"))?.valore == "1"){
             validators << new UserGreenPassValidator()
         }
         return validators

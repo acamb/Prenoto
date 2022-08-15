@@ -116,6 +116,11 @@ class TestDataLoader {
                 valore: 3,
                 valido: true
         ))
+        configurazioneRepository.save(new Configurazione(
+                chiave: Configurazione.ConfigTokens.CHECK_GREENPASS.name(),
+                valore: 1,
+                valido: true
+        ))
         //prenotazioneService.creaSlotNuovaSettimana()
         //prenotazioneService.impostaSlotInizializzati()
     }
