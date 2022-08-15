@@ -13,11 +13,11 @@ import ac.sanbernardo.prenoto.repositories.PrenotazioneRepository
 import ac.sanbernardo.prenoto.repositories.UserRepository
 import ac.sanbernardo.prenoto.services.PrenotazioneService
 import io.micronaut.test.extensions.spock.annotation.MicronautTest
+import jakarta.inject.Inject
 import org.slf4j.LoggerFactory
 import spock.lang.Specification
 import spock.lang.Unroll
 
-import javax.inject.Inject
 
 @MicronautTest(application = Application.class,packages = "ac.sanbernardo.prenoto",rollback = true)
 class PrenotazioneServiceTests extends Specification {

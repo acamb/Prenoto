@@ -2,10 +2,12 @@ package ac.sanbernardo.prenoto
 
 import ac.sanbernardo.prenoto.model.User
 import ac.sanbernardo.prenoto.repositories.UserRepository
+import ac.sanbernardo.prenoto.services.UserService
+import ac.sanbernardo.prenoto.validators.ValidationException
 import io.micronaut.test.extensions.spock.annotation.MicronautTest
+import jakarta.inject.Inject
 import spock.lang.*
 
-import javax.inject.Inject
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 
@@ -13,6 +15,9 @@ import java.text.SimpleDateFormat
 class LoginBLTests extends Specification{
     @Inject
     UserRepository userRepository
+
+    @Inject
+    UserService userService
 
     @Shared
     DateFormat df = new SimpleDateFormat('yyyy-MM-dd')
@@ -45,6 +50,14 @@ class LoginBLTests extends Specification{
         user1 = userRepository.save(user1)
         then:
         User found = userRepository.findByUsernameAndActiveTrue(user1.username).orElse(null)
+        try{
+            userService.getValidators().each {
+                it.validate(found)
+            }
+        }
+        catch(ValidationException ex){
+            found = null
+        }
         assert (found != null) ==  pFound
         where:
         pActive  |  pDataFineValiditaGreenPass  | pDataFineVisitaAgonistica |  pFound | pRole

@@ -37,7 +37,8 @@ class Configurazione {
         NUMERO_ORE_MAX,
         TOKEN_FE,
         ORE_VALIDITA_TOKEN,
-        MAX_PRENOTAZIONI_UTENTE_SETTIMANA
+        MAX_PRENOTAZIONI_UTENTE_SETTIMANA,
+        CHECK_GREENPASS
     }
 
 
