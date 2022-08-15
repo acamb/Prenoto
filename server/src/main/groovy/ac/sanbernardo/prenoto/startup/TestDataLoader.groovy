@@ -2,7 +2,6 @@ package ac.sanbernardo.prenoto.startup
 
 import ac.sanbernardo.prenoto.aop.Logged
 import ac.sanbernardo.prenoto.auth.BcryptPasswordEncoderService
-import ac.sanbernardo.prenoto.auth.PasswordEncoder
 import ac.sanbernardo.prenoto.model.Configurazione
 import ac.sanbernardo.prenoto.model.User
 import ac.sanbernardo.prenoto.repositories.ConfigurazioneRepository
@@ -12,10 +11,9 @@ import io.micronaut.context.annotation.Requires
 import io.micronaut.context.env.Environment
 import io.micronaut.runtime.event.annotation.EventListener
 import io.micronaut.discovery.event.ServiceReadyEvent
-import jdk.nashorn.internal.runtime.logging.Loggable
-
-import javax.inject.Inject
-import javax.inject.Singleton
+import jakarta.inject.Inject
+import jakarta.inject.Singleton
+import org.slf4j.LoggerFactory
 
 @Singleton
 @Requires(env= Environment.DEVELOPMENT)
@@ -33,6 +31,7 @@ class TestDataLoader {
     @EventListener
     @Logged
     void loadData(final ServiceReadyEvent event){
+        LoggerFactory.getLogger(getClass()).info("loading test data")
         Date today = new Date()
         Calendar c = GregorianCalendar.getInstance()
         c.add(Calendar.DAY_OF_MONTH,-1)

@@ -15,9 +15,10 @@ import io.micronaut.http.annotation.Post
 import io.micronaut.http.annotation.QueryValue
 import io.micronaut.security.annotation.Secured
 import io.micronaut.security.rules.SecurityRule
+import jakarta.inject.Inject
 
 import javax.annotation.security.RolesAllowed
-import javax.inject.Inject
+
 import java.security.Principal
 
 @Controller("/api/user")

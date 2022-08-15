@@ -1,8 +1,7 @@
 package ac.sanbernardo.prenoto.auth
 
-import edu.umd.cs.findbugs.annotations.NonNull
-
-import javax.inject.Singleton
+import io.micronaut.core.annotation.NonNull
+import jakarta.inject.Singleton
 import javax.validation.constraints.NotBlank
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 

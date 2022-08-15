@@ -11,13 +11,11 @@ import io.micronaut.security.authentication.AuthenticationFailed
 import io.micronaut.security.authentication.AuthenticationProvider
 import io.micronaut.security.authentication.AuthenticationRequest
 import io.micronaut.security.authentication.AuthenticationResponse
-import io.micronaut.security.authentication.UserDetails
-import io.reactivex.BackpressureStrategy
-import io.reactivex.Flowable
+import jakarta.inject.Inject
 import org.reactivestreams.Publisher
-
-import javax.inject.Inject
-import javax.inject.Singleton
+import jakarta.inject.Singleton
+import reactor.core.publisher.Flux
+import reactor.core.publisher.FluxSink
 
 @Singleton
 class UserAuthenticationProvider implements  AuthenticationProvider{
@@ -31,17 +29,17 @@ class UserAuthenticationProvider implements  AuthenticationProvider{
 
     @Override
     public Publisher<AuthenticationResponse> authenticate(@Nullable HttpRequest<?> httpRequest, AuthenticationRequest<?, ?> authenticationRequest) {
-        return Flowable.create(emitter -> {
+        return Flux.create(emitter -> {
 
             try {
                 User user = userService.login(authenticationRequest.getIdentity(),authenticationRequest.getSecret())
-                emitter.onNext(new UserDetails(user.username, user.role ? [user.role] : []));
-                emitter.onComplete();
+                emitter.next(AuthenticationResponse.success((String) authenticationRequest.identity,[user.role ?: '']))
+                emitter.complete();
             }
             catch (all) {
-                emitter.onError(new AuthenticationException(new AuthenticationFailed()));
+                emitter.error(AuthenticationResponse.exception());
             }
 
-        }, BackpressureStrategy.ERROR);
+        }, FluxSink.OverflowStrategy.ERROR);
     }
 }

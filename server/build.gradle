@@ -1,6 +1,6 @@
 plugins {
     id "groovy"
-    id "com.github.johnrengelman.shadow" version "6.0.0"
+    id "com.github.johnrengelman.shadow" version "7.1.2"
     id "application"
 }
 
@@ -29,14 +29,15 @@ dependencies {
     implementation("io.micronaut:micronaut-http-client")
     implementation("io.micronaut.sql:micronaut-jdbc-hikari")
     implementation("io.micronaut.sql:micronaut-hibernate-jpa")
-    implementation("org.apache.logging.log4j:log4j-core:2.12.1")
+    implementation('org.apache.logging.log4j:log4j-core:2.18.0')
     implementation("io.micronaut.data:micronaut-data-hibernate-jpa")
     compileOnly("io.micronaut.data:micronaut-data-processor")
-    runtimeOnly("org.apache.logging.log4j:log4j-api:2.12.1")
-    runtimeOnly("org.apache.logging.log4j:log4j-slf4j-impl:2.12.1")
+    runtimeOnly('org.apache.logging.log4j:log4j-api:2.18.0')
+    runtimeOnly('org.apache.logging.log4j:log4j-slf4j-impl:2.18.0')
     runtimeOnly("com.h2database:h2")
+    implementation("io.micronaut.reactor:micronaut-reactor")
     // https://mvnrepository.com/artifact/commons-logging/commons-logging
-    compile group: 'commons-logging', name: 'commons-logging', version: '1.1.1'
+    implementation group: 'commons-logging', name: 'commons-logging', version: '1.1.1'
 
     compileOnly "io.micronaut.security:micronaut-security-annotations"
     implementation "io.micronaut.security:micronaut-security-jwt"
@@ -47,10 +48,9 @@ dependencies {
     testImplementation("org.spockframework:spock-core") {
         exclude group: "org.codehaus.groovy", module: "groovy-all"
     }
-    implementation('org.codehaus.groovy:groovy-all:3.0.3')
+    implementation('org.codehaus.groovy:groovy-all:3.0.12')
     // https://mvnrepository.com/artifact/org.mindrot/jbcrypt
-    compile group: 'org.mindrot', name: 'jbcrypt', version: '0.4'
-
+    implementation group: 'org.mindrot', name: 'jbcrypt', version: '0.4'
 }
 
 test.classpath += configurations.developmentOnly
@@ -63,8 +63,8 @@ test {
 }
 
 java {
-    sourceCompatibility = JavaVersion.toVersion('8')
-    targetCompatibility = JavaVersion.toVersion('8')
+    sourceCompatibility = JavaVersion.toVersion('17')
+    targetCompatibility = JavaVersion.toVersion('17')
 }
 
 tasks.withType(GroovyCompile) {

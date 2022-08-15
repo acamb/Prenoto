@@ -7,13 +7,8 @@ import ac.sanbernardo.prenoto.exceptions.IscrizioneNelPassatoNonCancellabileExce
 import ac.sanbernardo.prenoto.exceptions.MaxNumeroIscrizioniSuperateException
 import ac.sanbernardo.prenoto.exceptions.NumeroOreException
 import ac.sanbernardo.prenoto.exceptions.PostiEsauritiException
-import ac.sanbernardo.prenoto.model.Prenotazione
-import ac.sanbernardo.prenoto.model.SlotPrenotazione
-import ac.sanbernardo.prenoto.model.User
 import ac.sanbernardo.prenoto.services.PrenotazioneService
 import ac.sanbernardo.prenoto.services.UserService
-import io.micronaut.context.annotation.Parameter
-import io.micronaut.http.HttpResponse
 import io.micronaut.http.annotation.Body
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Delete
@@ -22,11 +17,11 @@ import io.micronaut.http.annotation.Post
 import io.micronaut.http.annotation.QueryValue
 import io.micronaut.security.annotation.Secured
 import io.micronaut.security.rules.SecurityRule
+import jakarta.inject.Inject
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 import javax.annotation.security.RolesAllowed
-import javax.inject.Inject
 import javax.persistence.OptimisticLockException
 import java.security.Principal
 

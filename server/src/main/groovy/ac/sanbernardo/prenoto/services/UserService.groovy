@@ -6,9 +6,8 @@ import ac.sanbernardo.prenoto.controllers.payloads.AggiornaUtenteRequest
 import ac.sanbernardo.prenoto.controllers.payloads.ResetPasswordRequest
 import ac.sanbernardo.prenoto.model.User
 import ac.sanbernardo.prenoto.repositories.UserRepository
-
-import javax.inject.Inject
-import javax.inject.Singleton
+import jakarta.inject.Inject
+import jakarta.inject.Singleton
 import javax.transaction.Transactional
 
 @Singleton

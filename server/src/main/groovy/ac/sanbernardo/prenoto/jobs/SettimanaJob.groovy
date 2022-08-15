@@ -3,9 +3,8 @@ package ac.sanbernardo.prenoto.jobs
 import ac.sanbernardo.prenoto.aop.Logged
 import ac.sanbernardo.prenoto.services.PrenotazioneService
 import io.micronaut.scheduling.annotation.Scheduled
-
-import javax.inject.Inject
-import javax.inject.Singleton
+import jakarta.inject.Inject
+import jakarta.inject.Singleton
 
 @Singleton
 class SettimanaJob {

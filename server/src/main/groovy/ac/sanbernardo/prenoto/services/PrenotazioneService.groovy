@@ -15,13 +15,13 @@ import ac.sanbernardo.prenoto.repositories.ConfigurazioneRepository
 import ac.sanbernardo.prenoto.repositories.PrenotazioneRepository
 import ac.sanbernardo.prenoto.repositories.SlotPrenotazioneRepository
 import groovy.time.TimeCategory
+import jakarta.inject.Inject
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-import javax.inject.Inject
-import javax.inject.Singleton
 import javax.persistence.NoResultException
 import javax.transaction.Transactional
+import jakarta.inject.Singleton
 
 @Singleton
 @Transactional
