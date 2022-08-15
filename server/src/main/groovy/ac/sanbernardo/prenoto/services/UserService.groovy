@@ -44,7 +44,7 @@ class UserService {
     }
 
     List<User> getAllUsers(){
-        return userRepository.findAllOrderByUsername();
+        return userRepository.findAllOrderByUsername()
     }
 
     void aggiornaUtente(AggiornaUtenteRequest aggiornaUtenteRequest) {
@@ -63,5 +63,9 @@ class UserService {
         userDb.cambioPassword = true
         userDb.active = true
         userRepository.save(userDb)
+    }
+
+    User inserisciUtente(User user) {
+        return userRepository.save(user)
     }
 }
