@@ -3,8 +3,6 @@ package ac.sanbernardo.prenoto.aop
 import io.micronaut.aop.MethodInterceptor
 import io.micronaut.aop.MethodInvocationContext
 import org.slf4j.LoggerFactory
-
-import javax.inject.Singleton
 import java.security.Principal
 
 @Singleton

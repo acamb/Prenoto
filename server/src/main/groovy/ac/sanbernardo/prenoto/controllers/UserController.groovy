@@ -3,6 +3,7 @@ package ac.sanbernardo.prenoto.controllers
 import ac.sanbernardo.prenoto.aop.Logged
 import ac.sanbernardo.prenoto.controllers.payloads.AggiornaUtenteRequest
 import ac.sanbernardo.prenoto.controllers.payloads.CambioPasswordRequest
+import ac.sanbernardo.prenoto.controllers.payloads.NuovoUtenteRequest
 import ac.sanbernardo.prenoto.controllers.payloads.ResetPasswordRequest
 import ac.sanbernardo.prenoto.model.User
 import ac.sanbernardo.prenoto.repositories.UserRepository
@@ -15,9 +16,12 @@ import io.micronaut.http.annotation.Post
 import io.micronaut.http.annotation.QueryValue
 import io.micronaut.security.annotation.Secured
 import io.micronaut.security.rules.SecurityRule
+import jakarta.inject.Inject
+import org.slf4j.LoggerFactory
 
 import javax.annotation.security.RolesAllowed
-import javax.inject.Inject
+import javax.management.relation.Role
+import javax.validation.Valid
 import java.security.Principal
 
 @Controller("/api/user")
@@ -72,7 +76,7 @@ class UserController {
                     success: true
             ]
         }
-        catch(all){
+        catch(ignored){
             [
                     success: false,
                     message: 'password.mismatch'
@@ -90,7 +94,7 @@ class UserController {
                     success: true
             ]
         }
-        catch(all){
+        catch(ignored){
             [
                     success: false,
                     message: 'generic.error'
@@ -108,7 +112,7 @@ class UserController {
                     success: true
             ]
         }
-        catch(all){
+        catch(ignored){
             [
                     success: false,
                     message: 'generic.error'
@@ -121,6 +125,36 @@ class UserController {
     @RolesAllowed(["OPERATOR","ADMIN"])
     def loadUser(@QueryValue Long id){
         User user = userRepository.findById(id).get()
+        return userToMap(user)
+    }
+
+    @Post("/")
+    @Logged
+    @RolesAllowed(['OPERATOR','ADMIN'])
+    def saveUser(@Valid @Body NuovoUtenteRequest nuovoUtenteRequest){
+        User user = new User()
+        user.nome = nuovoUtenteRequest.nome
+        user.cognome = nuovoUtenteRequest.cognome
+        user.password = nuovoUtenteRequest.password
+        user.active = nuovoUtenteRequest.active
+        user.cambioPassword = nuovoUtenteRequest.cambioPassword
+        user.username = nuovoUtenteRequest.username
+        user.role = nuovoUtenteRequest.role
+        user.dataFineValiditaGreenPass = nuovoUtenteRequest.dataFineValiditaGreenPass
+        user.dataFineVisitaAgonistica = nuovoUtenteRequest.dataFineVisitaAgonistica
+        try {
+            user = userService.inserisciUtente(user)
+            return userToMap(user)
+        }
+        catch(ignored){
+            [
+                    success: false,
+                    message: 'generic.error'
+            ]
+        }
+    }
+
+    static Map userToMap(User user){
         [
                 id: user.id,
                 username: user.username,

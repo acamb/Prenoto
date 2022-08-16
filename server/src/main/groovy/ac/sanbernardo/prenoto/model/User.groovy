@@ -48,7 +48,6 @@ class User implements UppercaseTrait {
         setUppercaseFields()
     }
 
-
     @Override
     public String toString() {
         return "User{" +
@@ -57,8 +56,13 @@ class User implements UppercaseTrait {
                 ", cognome='" + cognome + '\'' +
                 ", active=" + active +
                 ", cambioPassword=" + cambioPassword +
+                ", username='" + username + '\'' +
+                ", role='" + role + '\'' +
+                ", dataFineValiditaGreenPass=" + dataFineValiditaGreenPass +
+                ", dataFineVisitaAgonistica=" + dataFineVisitaAgonistica +
                 '}';
     }
+
 
     enum Roles {
         USER,

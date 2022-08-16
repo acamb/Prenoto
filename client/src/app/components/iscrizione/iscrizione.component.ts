@@ -35,8 +35,9 @@ export class IscrizioneComponent implements OnInit {
       this.router.navigateByUrl("/")
     }
     this.oreList=[];
-    this.oreList=[];
-    for(let i = 1;i<=+appState.parametri.find(p => p.chiave=ConfigTokens.NUMERO_ORE_MAX).valore;i++){
+    let oreConf = <number><unknown>appState.parametri.find(p => p.chiave=ConfigTokens.NUMERO_ORE_MAX).valore
+    console.log("Ore max: " + oreConf)
+    for(let i = 1;i<=oreConf;i++){
       this.oreList.push(i);
     }
     if(this.oreList.length > 0) {

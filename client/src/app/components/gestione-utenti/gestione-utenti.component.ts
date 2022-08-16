@@ -48,7 +48,7 @@ export class GestioneUtentiComponent implements OnInit {
         ?.slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);
     }
     else{
-      return this.appState.utenti.filter((u) => u.username.indexOf(this.filter)!= -1)
+      return this.appState.utenti.filter((u) => u.username.toLowerCase().indexOf(this.filter.toLocaleLowerCase())!= -1)
       ?.slice((this.page - 1) * this.pageSize, (this.page - 1) * this.pageSize + this.pageSize);
     }
   }

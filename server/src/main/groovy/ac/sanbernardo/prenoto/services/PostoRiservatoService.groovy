@@ -4,9 +4,8 @@ import ac.sanbernardo.prenoto.aop.Logged
 import ac.sanbernardo.prenoto.model.PostoRiservato
 import ac.sanbernardo.prenoto.model.TipoIscrizione
 import ac.sanbernardo.prenoto.repositories.PostoRiservatoRepository
-
-import javax.inject.Inject
-import javax.inject.Singleton
+import jakarta.inject.Inject
+import jakarta.inject.Singleton
 import javax.transaction.Transactional
 
 @Singleton

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Router} from '@angular/router';
 import { getServer } from './Utils';
-import * as jwt_decode from 'jwt-decode'
+import jwt_decode from "jwt-decode";
 import {BehaviorSubject, Observable} from "rxjs";
 import {User} from "../model/User";
 import {map} from "rxjs/operators";
@@ -32,7 +32,7 @@ export class AuthenticationService {
     }
     const date = new Date(0);
     try {
-      const exp = jwt_decode(sessionStorage.getItem('token')).exp;
+      const exp = (<any>jwt_decode(sessionStorage.getItem('token'))).exp;
       date.setUTCSeconds(exp);
       const valid = new Date().valueOf() < date.valueOf()
       return valid;

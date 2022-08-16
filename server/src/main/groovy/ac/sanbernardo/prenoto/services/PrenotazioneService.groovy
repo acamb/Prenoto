@@ -15,13 +15,13 @@ import ac.sanbernardo.prenoto.repositories.ConfigurazioneRepository
 import ac.sanbernardo.prenoto.repositories.PrenotazioneRepository
 import ac.sanbernardo.prenoto.repositories.SlotPrenotazioneRepository
 import groovy.time.TimeCategory
+import jakarta.inject.Inject
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-import javax.inject.Inject
-import javax.inject.Singleton
 import javax.persistence.NoResultException
 import javax.transaction.Transactional
+import jakarta.inject.Singleton
 
 @Singleton
 @Transactional
@@ -155,12 +155,12 @@ class PrenotazioneService {
     @Logged
     List<SlotPrenotazione> creaSlotNuovaSettimana(){
         List<SlotPrenotazione> slots = []
-        int oraInizio = configurazioneRepository.findByChiaveAndValidoTrue(Configurazione.ConfigTokens.ORA_INIZIO.name()).valore.toInteger()
-        int oraFine = configurazioneRepository.findByChiaveAndValidoTrue(Configurazione.ConfigTokens.ORA_FINE.name()).valore.toInteger()
-        int posti = configurazioneRepository.findByChiaveAndValidoTrue(Configurazione.ConfigTokens.POSTI_PER_ORA.name()).valore.toInteger()
+        int oraInizio = configurazioneRepository.findByChiaveAndValidoTrue(Configurazione.ConfigTokens.ORA_INIZIO.name()).orElseThrow().valore.toInteger()
+        int oraFine = configurazioneRepository.findByChiaveAndValidoTrue(Configurazione.ConfigTokens.ORA_FINE.name()).orElseThrow().valore.toInteger()
+        int posti = configurazioneRepository.findByChiaveAndValidoTrue(Configurazione.ConfigTokens.POSTI_PER_ORA.name()).orElseThrow().valore.toInteger()
         (0..6).each { giorno ->
             Calendar cal = Calendar.getInstance();
-            cal.set(Calendar.HOUR_OF_DAY, configurazioneRepository.findByChiaveAndValidoTrue(Configurazione.ConfigTokens.ORA_FINE.name()).valore.toInteger()); // ! clear would not reset the hour of day !
+            cal.set(Calendar.HOUR_OF_DAY, configurazioneRepository.findByChiaveAndValidoTrue(Configurazione.ConfigTokens.ORA_FINE.name()).orElseThrow().valore.toInteger()); // ! clear would not reset the hour of day !
             cal.clear(Calendar.MINUTE)
             cal.clear(Calendar.SECOND)
             cal.clear(Calendar.MILLISECOND);
@@ -241,8 +241,8 @@ class PrenotazioneService {
         }
 
 
-        int maxGiorni = configurazioneRepository.findByChiaveAndValidoTrue(Configurazione.ConfigTokens.MAX_PRENOTAZIONI_UTENTE_SETTIMANA.name()).valore.toInteger()
-        int maxOre = configurazioneRepository.findByChiaveAndValidoTrue(Configurazione.ConfigTokens.NUMERO_ORE_MAX.name()).valore.toInteger()
+        int maxGiorni = configurazioneRepository.findByChiaveAndValidoTrue(Configurazione.ConfigTokens.MAX_PRENOTAZIONI_UTENTE_SETTIMANA.name()).orElseThrow().valore.toInteger()
+        int maxOre = configurazioneRepository.findByChiaveAndValidoTrue(Configurazione.ConfigTokens.NUMERO_ORE_MAX.name()).orElseThrow().valore.toInteger()
 
         Prenotazione[] prenotazioniFatte = getPrenotazioniPerArciere(userId)
         Prenotazione[] adiacenti = prenotazioniFatte.findAll{it.slotPrenotazione.giornoSettimana == slotPrenotazione.giornoSettimana}

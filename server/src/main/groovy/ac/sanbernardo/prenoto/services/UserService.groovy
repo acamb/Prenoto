@@ -4,11 +4,14 @@ import ac.sanbernardo.prenoto.auth.BcryptPasswordEncoderService
 import ac.sanbernardo.prenoto.auth.PasswordEncoder
 import ac.sanbernardo.prenoto.controllers.payloads.AggiornaUtenteRequest
 import ac.sanbernardo.prenoto.controllers.payloads.ResetPasswordRequest
+import ac.sanbernardo.prenoto.model.Configurazione
 import ac.sanbernardo.prenoto.model.User
+import ac.sanbernardo.prenoto.repositories.ConfigurazioneRepository
 import ac.sanbernardo.prenoto.repositories.UserRepository
-
-import javax.inject.Inject
-import javax.inject.Singleton
+import ac.sanbernardo.prenoto.validators.Validator
+import ac.sanbernardo.prenoto.validators.user.UserGreenPassValidator
+import jakarta.inject.Inject
+import jakarta.inject.Singleton
 import javax.transaction.Transactional
 
 @Singleton
@@ -19,6 +22,8 @@ class UserService {
     UserRepository userRepository
     @Inject
     BcryptPasswordEncoderService encoder
+    @Inject
+    ConfigurazioneRepository configurazioneRepository
 
     User getUser(String username){
         userRepository.findByUsername(username)
@@ -26,6 +31,9 @@ class UserService {
 
     User login(String username,String password){
         User user =  userRepository.findByUsernameAndActiveTrue(username).orElse(null)
+        getValidators().each {
+            it.validate(user)
+        }
         if(encoder.matches(password,user.password)){
             return user
         }
@@ -45,7 +53,7 @@ class UserService {
     }
 
     List<User> getAllUsers(){
-        return userRepository.findAllOrderByUsername();
+        return userRepository.findAllOrderByUsername()
     }
 
     void aggiornaUtente(AggiornaUtenteRequest aggiornaUtenteRequest) {
@@ -64,5 +72,19 @@ class UserService {
         userDb.cambioPassword = true
         userDb.active = true
         userRepository.save(userDb)
+    }
+
+    User inserisciUtente(User user) {
+        user.active = true
+        user.password = encoder.encode(user.password)
+        return userRepository.save(user)
+    }
+
+    List<Validator<User>> getValidators(){
+        List<Validator<User>> validators = []
+        if(configurazioneRepository.findByChiaveAndValidoTrue(Configurazione.ConfigTokens.CHECK_GREENPASS.name()).orElse(new Configurazione(valore: "1"))?.valore == "1"){
+            validators << new UserGreenPassValidator()
+        }
+        return validators
     }
 }
