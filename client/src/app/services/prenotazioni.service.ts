@@ -1,3 +1,4 @@
+import { TipoIscrizione } from '../model/TipoIscrizione';
 import { Injectable } from '@angular/core';
 import {Observable} from "rxjs";
 import {User} from "../model/User";
@@ -25,13 +26,14 @@ export class PrenotazioniService {
     return this.http.get<Settimana>(getServer() + "api/prenotazione/slotAttivi");
   }
 
-  iscrivi(user: User,slot: Slot,ore: number): Observable<ApiResult>{
+  iscrivi(user: User,slot: Slot,ore: number,onBehalf = false): Observable<ApiResult>{
     return this.http.post<ApiResult>(getServer() + "api/prenotazione",{
         user: user,
         slot: {
             id: slot.id
         },
-        ore: ore
+        ore: ore,
+        tipoIscrizione: onBehalf ? TipoIscrizione.UFFICIO : TipoIscrizione.UTENTE
     });
   }
 

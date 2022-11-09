@@ -21,6 +21,25 @@
       </select>
     </div>
   </div>
+  <div *ngIf="admin && utenti">
+    <br/><br/>
+    <h3>Iscrivi altro utente</h3>
+    <div class="form-group">
+      <div class="form-label">Utente</div>
+      <input type="list" class="form-control" list="utentiList" name="utente" [(ngModel)]="utente"/>
+      <datalist id="utentiList">
+          <option *ngFor="let u of utenti" [ngValue]="u">{{u.cognome + " " + u.nome}}</option>
+      </datalist>
+  </div>
+  <!-- <div class="row form-group">
+      <div class="col-md-3" ><label >Iscrivi anche se slot pieno</label>
+      </div>
+      <div class="col-md-3 form-check">
+        <input type="checkbox" class="position-static " [(ngModel)]="forza"
+              name="forza"/>
+      </div>
+    </div> -->
+  </div>
   <div class="row">
     <div class="col-md-3"></div>
     <div class="col-md-4">

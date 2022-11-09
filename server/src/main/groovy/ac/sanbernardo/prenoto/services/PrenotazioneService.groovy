@@ -45,7 +45,7 @@ class PrenotazioneService {
      * @return La lista delle prenotazioni salvate o lancia un eccezione se almeno una prenotazione non e' possibile: in questo caso sono annullate tutte
      */
     @Logged
-    List<Prenotazione> prenota(User user, SlotPrenotazione slotPartenza,int ore) throws PostiEsauritiException, NumeroOreException,MaxNumeroIscrizioniSuperateException{
+    List<Prenotazione> prenota(User user, SlotPrenotazione slotPartenza,int ore,TipoIscrizione tipoIscrizione = TipoIscrizione.UTENTE) throws PostiEsauritiException, NumeroOreException,MaxNumeroIscrizioniSuperateException{
         List<SlotPrenotazione> listaLock = []
         List<Prenotazione> prenotazioni = []
         int oreMax = configurazioneRepository.findByChiaveAndValidoTrue(Configurazione.ConfigTokens.NUMERO_ORE_MAX.name()).orElse(null)?.valore?.toInteger() ?: 3
@@ -54,11 +54,12 @@ class PrenotazioneService {
         }
         SlotPrenotazione slotDb = slotPrenotazioneRepository.findById(slotPartenza.id).get()
         listaLock = getSlotsCollegati(slotDb,ore)
-        if(listaLock.any{ it.postiRimanenti < 1 }){
-            throw new PostiEsauritiException()
+        SlotPrenotazione esaurito = listaLock.find{ it.postiRimanenti < 1 }
+        if(esaurito){
+            throw new PostiEsauritiException(esaurito.data,esaurito.ora)
         }
         listaLock.each { SlotPrenotazione slot ->
-            if(verificaIscrivibilita(slot,TipoIscrizione.UTENTE,user.id)) {
+            if(verificaIscrivibilita(slot,tipoIscrizione,user.id)) {
                 prenotazioni << iscrivi(slot, user.id)
             }
             else{

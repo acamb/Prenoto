@@ -1,3 +1,5 @@
+import { User } from './../../model/User';
+import { from, Observable } from 'rxjs';
 import { Component, OnInit } from '@angular/core';
 import {getGiornoFromNumero} from "../../services/Utils";
 import {ActivatedRoute, Router} from "@angular/router";
@@ -19,6 +21,10 @@ export class IscrizioneComponent implements OnInit {
   ore: number = undefined;
   oreList : Array<number>;
   showSlotNelPassatoToast = false;
+  admin=false;
+  utenti: User[];
+  forza=false;
+  utente: User;
 
   get slotDisponibili() : Array<Slot>{
     return this.appState.settimana.giorni.find(g => g.giorno == this.giorno).slots.filter(s => s.posti > 0);
@@ -43,6 +49,8 @@ export class IscrizioneComponent implements OnInit {
     if(this.oreList.length > 0) {
       this.ore = this.oreList[0];
     }
+    this.admin = this.authService.user.role === "ADMIN";
+    this.appState.loadUtentiNoCache().then(()=> this.utenti=this.appState.utenti);
   }
 
   getGiornoFromNumero=getGiornoFromNumero;
@@ -59,8 +67,7 @@ export class IscrizioneComponent implements OnInit {
       return false
     }
     try {
-      let result = await this.prenotazioniService.iscrivi(this.authService.user, this.slotScelto, this.ore).toPromise();
-      console.log(JSON.stringify(result))
+      let result = await this.prenotazioniService.iscrivi(this.utente ? this.getUtenteFromList(this.utente) : this.authService.user, this.slotScelto, this.ore,this.utente != null).toPromise();
       if(result.success) {
         return this.router.navigateByUrl("/");
       }
@@ -76,5 +83,10 @@ export class IscrizioneComponent implements OnInit {
     catch (e) {
       return this.router.navigateByUrl("/error");
     }
+
+  }
+
+  getUtenteFromList(utente): User{
+    return this.utenti.find((u)=> (u.cognome + " " + u.nome) === utente)
   }
 }
