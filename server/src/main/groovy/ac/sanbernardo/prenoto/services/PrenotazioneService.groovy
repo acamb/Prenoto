@@ -48,7 +48,8 @@ class PrenotazioneService {
     List<Prenotazione> prenota(User user, SlotPrenotazione slotPartenza,int ore) throws PostiEsauritiException, NumeroOreException,MaxNumeroIscrizioniSuperateException{
         List<SlotPrenotazione> listaLock = []
         List<Prenotazione> prenotazioni = []
-        if(ore > 3){
+        int oreMax = configurazioneRepository.findByChiaveAndValidoTrue(Configurazione.ConfigTokens.NUMERO_ORE_MAX.name()).orElse(null)?.valore?.toInteger() ?: 3
+        if(ore > oreMax){
             throw new NumeroOreException();
         }
         SlotPrenotazione slotDb = slotPrenotazioneRepository.findById(slotPartenza.id).get()
