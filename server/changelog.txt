@@ -1,2 +1,9 @@
+1.3
+    - Admins can insert reservations on user behalf
+
+1.2
+    - API user creation
+    - Bump libraries & framework
+
 1.1
     - user management and green pass expiration date
