@@ -49,7 +49,7 @@ export class IscrizioneComponent implements OnInit {
     if(this.oreList.length > 0) {
       this.ore = this.oreList[0];
     }
-    this.admin = this.authService.user.role === "ADMIN";
+    this.admin = ["ADMIN","OPERATOR"].find((r)=> r === this.authService.user.role) != undefined;
     this.appState.loadUtentiNoCache().then(()=> this.utenti=this.appState.utenti);
   }
 
