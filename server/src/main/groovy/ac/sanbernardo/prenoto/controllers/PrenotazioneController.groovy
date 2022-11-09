@@ -7,8 +7,11 @@ import ac.sanbernardo.prenoto.exceptions.IscrizioneNelPassatoNonCancellabileExce
 import ac.sanbernardo.prenoto.exceptions.MaxNumeroIscrizioniSuperateException
 import ac.sanbernardo.prenoto.exceptions.NumeroOreException
 import ac.sanbernardo.prenoto.exceptions.PostiEsauritiException
+import ac.sanbernardo.prenoto.model.TipoIscrizione
 import ac.sanbernardo.prenoto.services.PrenotazioneService
 import ac.sanbernardo.prenoto.services.UserService
+import io.micronaut.http.HttpResponse
+import io.micronaut.http.HttpStatus
 import io.micronaut.http.annotation.Body
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Delete
@@ -16,6 +19,7 @@ import io.micronaut.http.annotation.Get
 import io.micronaut.http.annotation.Post
 import io.micronaut.http.annotation.QueryValue
 import io.micronaut.security.annotation.Secured
+import io.micronaut.security.authentication.Authentication
 import io.micronaut.security.rules.SecurityRule
 import jakarta.inject.Inject
 import org.slf4j.Logger
@@ -62,14 +66,22 @@ class PrenotazioneController {
     @Post("/")
     @Logged
     @RolesAllowed(["USER","OPERATOR","ADMIN"])
-    def iscrivi(@Body IscriviRequestBody body){
+    def iscrivi(@Body IscriviRequestBody body,Authentication authentication){
         boolean result = true
         String message = "PRENOTAZIONE_OK"
+        Map<String,String> details = [:]
+
+        if(body.tipoIscrizione == TipoIscrizione.UFFICIO && !["OPERATOR","ADMIN"].intersect( authentication.roles)){
+            logger.warn("iscrivi [tipoIscrizione=UFFICIO] not allowed!")
+            return HttpResponse.status(HttpStatus.METHOD_NOT_ALLOWED)
+        }
 
         try {
             prenotazioneService.prenota(body.user,
                     body.slot,
-                    body.ore)
+                    body.ore,
+                    body.tipoIscrizione ?: TipoIscrizione.UTENTE
+            )
         }
         catch(NumeroOreException ex){
             result = false
@@ -78,6 +90,7 @@ class PrenotazioneController {
         catch(PostiEsauritiException ex){
             result = false
             message = "PRENOTAZIONE_KO_POSTO"
+            details[Utils.date2String(ex.data)] = ex.ora
         }
         catch(MaxNumeroIscrizioniSuperateException ex){
             result = false
@@ -95,7 +108,8 @@ class PrenotazioneController {
 
         return [
                 success: result,
-                message: message
+                message: message,
+                details: details
         ]
     }
 
