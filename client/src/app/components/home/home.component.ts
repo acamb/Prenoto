@@ -4,6 +4,7 @@ import {Settimana} from "../../model/Settimana";
 import {IscrizioneUtente} from "../../model/IscrizioneUtente";
 import {AppStateService} from "../../services/app-state.service";
 import {PrenotazioniService} from "../../services/prenotazioni.service";
+import { ConfigTokens, Configurazione } from 'src/app/model/Configurazione';
 
 @Component({
   selector: 'app-home',
@@ -17,6 +18,10 @@ export class HomeComponent implements OnInit {
   }
   get iscrizioni(){
     return this.appState.iscrizioni
+  }
+
+  get postiPerSlot(){
+    return this.appState.parametri.find(p => p.chiave==ConfigTokens.POSTI_PER_ORA).valore
   }
 
   constructor(private route: ActivatedRoute,

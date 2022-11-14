@@ -41,7 +41,8 @@ const routes: Routes = [
         component: HomeComponent,
         resolve: {
           iscrizioni: IscrizioniUtenteResolver,
-          settimana: SettimanaResolver
+          settimana: SettimanaResolver,
+          parametri: ParametriResolver
         },
         canActivate: [PasswordTemporaneaGuard]
       },

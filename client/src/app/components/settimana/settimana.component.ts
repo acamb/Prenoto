@@ -18,6 +18,8 @@ export class SettimanaComponent implements OnInit {
 
   @Input()
   settimana: Settimana
+  @Input()
+  postiPerSlot: number
 
   getGiornoFromNumero = getGiornoFromNumero;
 
