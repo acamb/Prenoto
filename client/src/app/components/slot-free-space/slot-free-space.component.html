@@ -1,0 +1,8 @@
+<div class="slot-container">
+    
+<div class="slot-free-space-container linear-grey">
+    <div class="slot-free-space-inner" [ngStyle]="{'width': (amount >0 ? amount/total*100 : 100) + '%'}" [ngClass]="color">
+       <p *ngIf="showAmount">{{amount}} / {{total}}</p>
+    </div>
+</div>
+</div>

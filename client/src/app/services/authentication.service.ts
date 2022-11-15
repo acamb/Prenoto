@@ -61,7 +61,7 @@ export class AuthenticationService {
 
   async authenticate(username: string, password: string): Promise<boolean>{
     try {
-      let resp = await this.httpClient.post<AuthResponse>(getServer() + 'login', {
+      let resp = await this.httpClient.post<AuthResponse>(getServer() + 'api/login', {
         username: username,
         password: password
       }).toPromise();
