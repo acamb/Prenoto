@@ -6,8 +6,6 @@
     "start": "ng serve",
     "build": "ng build",
     "package": "ng build --configuration production",
-    "prepackage": "rimraf ../server/src/main/resources/public/ && mkdirp ../server/src/main/resources/public",
-    "postpackage": "cpx \"dist/client/**\" ../server/src/main/resources/public",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

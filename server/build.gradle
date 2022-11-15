@@ -4,7 +4,7 @@ plugins {
     id "application"
 }
 
-version "1.3"
+version "1.4"
 group "ac.sanbernardo.prenoto"
 
 repositories {
@@ -29,11 +29,11 @@ dependencies {
     implementation("io.micronaut:micronaut-http-client")
     implementation("io.micronaut.sql:micronaut-jdbc-hikari")
     implementation("io.micronaut.sql:micronaut-hibernate-jpa")
-    implementation('org.apache.logging.log4j:log4j-core:2.18.0')
+    implementation('org.apache.logging.log4j:log4j-core:2.19.0')
     implementation("io.micronaut.data:micronaut-data-hibernate-jpa")
     compileOnly("io.micronaut.data:micronaut-data-processor")
-    runtimeOnly('org.apache.logging.log4j:log4j-api:2.18.0')
-    runtimeOnly('org.apache.logging.log4j:log4j-slf4j-impl:2.18.0')
+    runtimeOnly('org.apache.logging.log4j:log4j-api:2.19.0')
+    runtimeOnly('org.apache.logging.log4j:log4j-slf4j-impl:2.19.0')
     runtimeOnly("com.h2database:h2")
     implementation("io.micronaut.reactor:micronaut-reactor")
     // https://mvnrepository.com/artifact/commons-logging/commons-logging
@@ -86,21 +86,4 @@ tasks.withType(JavaExec) {
         )
     }
 }
-
-def webappDir = "$projectDir/../client"
-task buildFrontend(type:Exec) {
-    workingDir "$webappDir"
-    commandLine "npm", "run", "package"
-}
-
-
-processResources{
-    if (gradle.startParameter.taskNames.contains("assemble")) {
-        dependsOn "buildFrontend"
-    }
-    else{
-        println "skipping frontend build"
-    }
-}
-
 
