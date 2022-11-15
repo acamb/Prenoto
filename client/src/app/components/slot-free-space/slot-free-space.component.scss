@@ -1,0 +1,36 @@
+.slot-free-space-container{
+    width: 50vw;
+    height: 30px;
+    border-radius: 40px;
+    border-style: none;
+    position:relative;
+    text-align: center;
+}
+.slot-free-space-inner{
+    height: 28px;
+    border-radius: 20px;
+    position: absolute;
+    transition: 1.5s ease 0.3s;
+    color: white;
+    //background: linear-gradient(to left,#10500e,#1a9716);
+    
+    
+}
+
+
+.linear-green{
+    background: linear-gradient(to left,#09ff0162,#22dc1b65)
+}
+
+.linear-yellow{
+    background: linear-gradient(to left,#ffe11c7c 20%,#22dc1b81);
+}
+.linear-red{
+    background: linear-gradient(to left,#dd2121ae,#ffe11c22 30%),
+                linear-gradient(to left,#ffe11c7c 40%,#22dc1b6f);
+    
+}
+
+.linear-grey{
+    background: linear-gradient(to left,#52a06c6e,#52a06c0c 70%);
+}
