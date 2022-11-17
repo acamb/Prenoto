@@ -1,0 +1,21 @@
+<div class="modal fade" data-backdrop="static" tabindex="-1" role="dialog" [ngStyle]="{'display':modalDisplayStyle}"
+    [ngClass]="modalClass">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Trend delle ultime settimane</h5>
+            <a class="close" data-dismiss="modal" aria-label="Close" (click)="close()">
+              <span aria-hidden="true"><i class="bi bi-x-circle"></i></span>
+          </a>
+          </div>
+          <div class="modal-body">
+            <ng-content></ng-content>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" data-dismiss="modal" (click)="close()">Chiudi&nbsp;<i class="bi bi-x-circle"></i></button>
+          </div>
+        </div>
+      </div>
+    
+</div>
+<div class="modal-overlay modal-backdrop" [ngStyle]="{'display':modalDisplayStyle}"></div>

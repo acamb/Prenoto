@@ -1,4 +1,4 @@
-<div *ngIf="wrongLogin" class="alert-danger">
+<div *ngIf="wrongLogin" class="alert alert-danger">
   Login errata
 </div>
 <form #loginForm="ngForm" (ngSubmit)="onSubmit()">
@@ -21,8 +21,8 @@
   <div class="row">
     <div class="col-md-3"></div>
     <div class="col-md-4">
-      <button type="submit" [disabled]="!loginForm.form.valid" class="btn btn-success">Login</button>
-      <button type="reset" class="btn btn-secondary">Reset</button>
+      <button type="submit" [disabled]="!loginForm.form.valid" class="btn btn-outline-success">Login&nbsp;<i class="bi bi-box-arrow-right"></i></button>
+      <button type="reset" class="btn btn-outline-secondary">Reset&nbsp;<i class="bi bi-x-circle"></i></button>
     </div>
   </div>
 </form>

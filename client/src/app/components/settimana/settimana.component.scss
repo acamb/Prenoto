@@ -9,3 +9,12 @@
 .slot-giorno{
     text-align: center;
 }
+.headerFlex{
+    display: flex;
+    align-items: center;
+    justify-items: center;
+    justify-content: space-between;
+}
+.item{
+   margin: auto;
+}

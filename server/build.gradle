@@ -4,7 +4,7 @@ plugins {
     id "application"
 }
 
-version "1.4"
+version "1.5"
 group "ac.sanbernardo.prenoto"
 
 repositories {
@@ -51,6 +51,7 @@ dependencies {
     implementation('org.codehaus.groovy:groovy-all:3.0.12')
     // https://mvnrepository.com/artifact/org.mindrot/jbcrypt
     implementation group: 'org.mindrot', name: 'jbcrypt', version: '0.4'
+    implementation("io.micronaut.cache:micronaut-cache-caffeine")
 }
 
 test.classpath += configurations.developmentOnly
