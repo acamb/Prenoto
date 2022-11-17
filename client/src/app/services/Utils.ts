@@ -28,3 +28,5 @@ export function extractData(res){
         default: return null;
       }
   }
+
+  export const range = (start, end) => Array.from(Array(end - start + 1).keys()).map(x => x + start);
