@@ -2,10 +2,25 @@
   <div class="card-header">
     <h4>Slot iscrizioni</h4>
   </div>
+  <app-modal [isVisible]="trendModalVisible" (onClose)="closeTrend()">
+    <app-chart [data]="convertData((trendData | async)?.data)" [labels]="trendLabels" [isVisible]="trendModalVisible" [oreMax]="oreMax"></app-chart>
+      </app-modal>
   <div class="card-body">
     <div *ngFor="let giorno of giorni">
       <div class="card card-giorno">
-      <div class="card-header>"><h5 class="text-center">{{ getGiornoFromNumero(giorno.giorno)}} - {{giorno.data | date:'dd/MM/yyyy' }}<button class="btn btn-primary btn-lg float-right" (click)="iscrivi(giorno.giorno)">Iscrivi</button></h5> </div>
+      <div class="card-header>">
+        
+        <div class="headerFlex">
+          <h5 >{{ getGiornoFromNumero(giorno.giorno)}} - {{giorno.data | date:'dd/MM/yyyy' }}</h5>
+          
+          <button class="btn btn-outline-success btn-lg" (click)="openTrend(giorno.giorno)">
+            <i class="bi bi-graph-up-arrow"></i>
+          </button>
+        </div>
+        <div class="headerFlex">
+        <button class="btn btn-outline-primary btn-lg item" (click)="iscrivi(giorno.giorno)">Iscrivi&nbsp;<i class="bi bi-pencil"></i></button>
+        </div>
+      </div>
       <div class="card-body">
       <ul list-group>
         <li class="list-group-item slot-giorno" *ngFor="let slot of getSlots(giorno.giorno)">

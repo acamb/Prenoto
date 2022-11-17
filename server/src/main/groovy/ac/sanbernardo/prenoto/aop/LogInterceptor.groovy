@@ -1,11 +1,14 @@
 package ac.sanbernardo.prenoto.aop
 
+import io.micronaut.aop.InterceptorBean
 import io.micronaut.aop.MethodInterceptor
 import io.micronaut.aop.MethodInvocationContext
+import jakarta.inject.Singleton
 import org.slf4j.LoggerFactory
 import java.security.Principal
 
 @Singleton
+@InterceptorBean(Logged)
 class LogInterceptor implements MethodInterceptor<Object, Object> {
     @Override
     Object intercept(MethodInvocationContext<Object, Object> context) {

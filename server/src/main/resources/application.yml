@@ -51,6 +51,10 @@ micronaut:
             - PUT
             - DELETE
             - GET
+  caches:
+    daily-trend:
+      charset: UTF-8
+      expire-after-write: P7D
 datasources:
   default:
     url: jdbc:h2:mem:devDb;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
