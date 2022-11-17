@@ -5,14 +5,14 @@
           <div class="modal-header">
             <h5 class="modal-title">Trend delle ultime settimane</h5>
             <a class="close" data-dismiss="modal" aria-label="Close" (click)="close()">
-              <span aria-hidden="true">&times;</span>
+              <span aria-hidden="true"><i class="bi bi-x-circle"></i></span>
           </a>
           </div>
           <div class="modal-body">
             <ng-content></ng-content>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="close()">Chiudi</button>
+            <button type="button" class="btn btn-outline-secondary" data-dismiss="modal" (click)="close()">Chiudi&nbsp;<i class="bi bi-x-circle"></i></button>
           </div>
         </div>
       </div>
