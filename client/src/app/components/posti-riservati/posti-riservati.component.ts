@@ -60,7 +60,7 @@ export class PostiRiservatiComponent implements OnInit {
         this.ore.push(i);
     }
     this._oreMax=[];
-    for(let i = 1;i<=+appState.parametri.find(p => p.chiave=ConfigTokens.NUMERO_ORE_MAX).valore;i++){
+    for(let i = 1;i<=+appState.parametri.find(p => p.chiave==ConfigTokens.NUMERO_ORE_MAX).valore;i++){
       this._oreMax.push(i);
     }
   }

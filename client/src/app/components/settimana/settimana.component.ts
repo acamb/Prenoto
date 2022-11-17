@@ -31,8 +31,7 @@ export class SettimanaComponent implements OnInit {
   trendModalVisible = false;
 
   trendData: Observable<DailyTrend>;
-  trendLabels = range(9,19);
-  oreMax: number;
+  trendLabels : number[];
 
   getGiornoFromNumero = getGiornoFromNumero;
 
@@ -40,7 +39,9 @@ export class SettimanaComponent implements OnInit {
     private prenotazioniService : PrenotazioniService,
     private trendService: TrendService,
     private appStateService: AppStateService) {
-      this.oreMax =  <number><unknown>appStateService.parametri.find(p => p.chiave=ConfigTokens.NUMERO_ORE_MAX).valore
+      let oraInizio = parseInt(<string>appStateService.parametri.find(p => p.chiave==ConfigTokens.ORA_INIZIO).valore)
+      let oraFine = parseInt(<string>appStateService.parametri.find(p => p.chiave==ConfigTokens.ORA_FINE).valore)
+      this.trendLabels = range(oraInizio,oraFine)
   }
 
   get giorni() : Array<Giorno> {

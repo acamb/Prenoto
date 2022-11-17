@@ -2,8 +2,8 @@
   <div class="card-header">
     <h4>Slot iscrizioni</h4>
   </div>
-  <app-modal [isVisible]="trendModalVisible" (onClose)="closeTrend()">
-    <app-chart [data]="convertData((trendData | async)?.data)" [labels]="trendLabels" [isVisible]="trendModalVisible" [oreMax]="oreMax"></app-chart>
+  <app-modal *ngIf="trendLabels" [isVisible]="trendModalVisible" (onClose)="closeTrend()">
+    <app-chart [data]="convertData((trendData | async)?.data)" [labels]="trendLabels" [isVisible]="trendModalVisible" [oreMax]="postiPerSlot"></app-chart>
       </app-modal>
   <div class="card-body">
     <div *ngFor="let giorno of giorni">
