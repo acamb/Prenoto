@@ -42,7 +42,6 @@ ngOnChanges(changes: SimpleChanges): void {
 }
 
   createChart(){
-    console.log("credo chart,ore: " + this.oreMax)
     this.chart = new Chart("chart",{
       type: 'line',
       data: {

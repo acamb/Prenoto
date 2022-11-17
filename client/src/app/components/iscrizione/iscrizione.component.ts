@@ -42,7 +42,6 @@ export class IscrizioneComponent implements OnInit {
     }
     this.oreList=[];
     let oreConf = <number><unknown>appState.parametri.find(p => p.chiave=ConfigTokens.NUMERO_ORE_MAX).valore
-    console.log("Ore max: " + oreConf)
     for(let i = 1;i<=oreConf;i++){
       this.oreList.push(i);
     }
